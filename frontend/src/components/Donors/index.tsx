@@ -1,8 +1,8 @@
 import * as React from "react";
-import StudentTable from "./studentTable";
+import DonorTable from "./donorTable";
 
 const Students = () => {
-	return <StudentTable />;
+	return <DonorTable />;
 };
 
 export default Students;

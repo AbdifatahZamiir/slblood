@@ -50,16 +50,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-	levels: any;
-	teachers: any;
+	bloodtypes: any;
 	onSubmit: (data: any) => void;
 	row?: any;
 	name: string;
 }
 
-const StudentForm: React.FC<Props> = ({
-	teachers,
-	levels,
+const DonorForm: React.FC<Props> = ({
+	bloodtypes,
 	onSubmit,
 	row,
 	name,
@@ -68,45 +66,31 @@ const StudentForm: React.FC<Props> = ({
 		firstname: Yup.string().required("firstname is required"),
 		secondname: Yup.string().required("secondname is required"),
 		lastname: Yup.string().required("lastname is required"),
-		country: Yup.string().required("country is required"),
+		city: Yup.string().required("city is required"),
 		contact: Yup.number().required("contact is required"),
-		teacherId: Yup.number().required("teacher name is required"),
-		levelId: Yup.number().required("level  is required"),
+		bloodtypeId: Yup.number().required("bloodtype name is required"),
 		gender: Yup.string().required("Gender is required"),
 	});
 	const InputField = ({ field, form, ...props }: any) => {
 		return <TextField {...props} {...field} />;
 	};
-	const TeacherField = ({ field, form, ...props }: any) => {
+	const BloodTypeField = ({ field, form, ...props }: any) => {
 		return (
 			<FormControl variant="outlined" className={classes.formControl}>
 				<InputLabel id="demo-simple-select-outlined-label">
-					TeacherId
+					bloodtypeId
 				</InputLabel>
 				<Select {...props} {...field}>
-					{teachers.map((teacher: any) => (
-						<MenuItem key={teacher.teacherId} value={teacher.teacherId}>
-							{teacher.firstname} {teacher.secondname}
+					{bloodtypes.map((bloodtype: any) => (
+						<MenuItem key={bloodtype.bloodtypeId} value={bloodtype.bloodtypeId}>
+							{bloodtype.firstname} {bloodtype.secondname}
 						</MenuItem>
 					))}
 				</Select>
 			</FormControl>
 		);
 	};
-	const LevelField = ({ field, form, ...props }: any) => {
-		return (
-			<FormControl variant="outlined" className={classes.formControl}>
-				<InputLabel id="demo-simple-select-outlined-label">LevelId</InputLabel>
-				<Select {...props} {...field}>
-					{levels.map((level: any) => (
-						<MenuItem key={level.levelId} value={level.levelId}>
-							{level.levelname}
-						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
-		);
-	};
+
 
 	const genderSelect = ({ field, form, ...props }: any) => {
 		return (
@@ -131,22 +115,20 @@ const StudentForm: React.FC<Props> = ({
 		firstname: "",
 		secondname: "",
 		lastname: "",
-		country: "",
+		city: "",
 		contact: undefined,
 		gender: "",
-		teacherId: undefined,
-		levelId: undefined,
+		bloodtypeId: undefined,
 	};
 
 	const editValues = row && {
 		firstname: row.firstname,
 		secondname: row.secondname,
 		lastname: row.lastname,
-		country: row.country,
+		city: row.city,
 		contact: row.contact,
 		gender: row.gender,
-		teacherId: row.teacherId,
-		levelId: row.levelId,
+		bloodtypeId: row.bloodtypeId,
 	};
 
 	const values = name === "edit" ? editValues : addValues;
@@ -238,12 +220,12 @@ const StudentForm: React.FC<Props> = ({
 									/>
 									<Field
 										variant="outlined"
-										name="country"
-										label="Country"
+										name="city"
+										label="city"
 										helperText={
-											errors.country && touched.country ? errors.country : null
+											errors.city && touched.city ? errors.city : null
 										}
-										error={touched.country && Boolean(errors.country)}
+										error={touched.city && Boolean(errors.city)}
 										component={InputField}
 									/>
 									<Field
@@ -264,18 +246,11 @@ const StudentForm: React.FC<Props> = ({
 										component={genderSelect}
 									/>
 									<Field
-										labelId="teacherId"
-										name="teacherId"
-										id="teacherId"
-										label="TeacherId"
-										component={TeacherField}
-									/>{" "}
-									<Field
-										labelId="levelId"
-										name="levelId"
-										id="levelId"
-										label="LevelId"
-										component={LevelField}
+										labelId="bloodtypeId"
+										name="bloodtypeId"
+										id="bloodtypeId"
+										label="bloodtypeId"
+										component={BloodTypeField}
 									/>
 									<DialogActions>
 										<Button onClick={handleClose} color="primary">
@@ -300,4 +275,4 @@ const StudentForm: React.FC<Props> = ({
 	);
 };
 
-export default StudentForm;
+export default DonorForm;

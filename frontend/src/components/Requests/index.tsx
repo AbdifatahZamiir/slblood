@@ -1,8 +1,8 @@
 import React from "react";
-import GradeTable from "./gradeTable";
+import RequestTable from "./requestTable";
 
 const Grade = () => {
-	return <GradeTable />;
+	return <RequestTable />;
 };
 
 export default Grade;

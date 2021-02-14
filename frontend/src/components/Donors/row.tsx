@@ -16,7 +16,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import React from "react";
-import StudentForm from "../Forms/studentForm";
+import StudentForm from "../Forms/donorForm";
 import DeletePopUp from "../Forms/PopUpForms/deletePop";
 import { Link } from "react-router-dom";
 
@@ -41,15 +41,14 @@ const useRowStyles = makeStyles((theme) => ({
 
 interface Props {
   key: number;
-  levels: any;
-  teachers: any;
+  bloodtypes: any;
   row: any;
   onDelete: (id: number) => void;
   onUpdate: (data: object) => void;
 }
 
 const Row: React.FC<Props> = (props) => {
-  const { row, onDelete, levels, teachers, onUpdate } = props;
+  const { row, onDelete, bloodtypes, onUpdate } = props;
   const [open, setOpen] = React.useState<boolean>(false);
   const classes: any = useRowStyles();
 
@@ -80,8 +79,7 @@ const Row: React.FC<Props> = (props) => {
         <TableCell style={{ display: "flex" }}>
           <StudentForm
             onSubmit={onUpdate}
-            teachers={teachers}
-            levels={levels}
+            bloodtypes={bloodtypes}
             name="edit"
             row={row}
           />
@@ -112,7 +110,7 @@ const Row: React.FC<Props> = (props) => {
                 <Box display="flex" p={1}>
                   <Box p={1} flexGrow={1}>
                     <Typography variant="h6" gutterBottom component="div">
-                      Grades
+                      Requests
                     </Typography>
                   </Box>
                   <Box p={1}></Box>
@@ -121,20 +119,18 @@ const Row: React.FC<Props> = (props) => {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Grade ID</TableCell>
-                    <TableCell>Subject Name</TableCell>
-                    <TableCell>Exam Code</TableCell>
-                    <TableCell align="left">Grade(%)</TableCell>
+                    <TableCell>Request ID</TableCell>
+                    <TableCell>Blood Name</TableCell>
+                    <TableCell align="left">Amount</TableCell>
                   </TableRow>
                 </TableHead>
-                {row.grades && (
+                {row.requests && (
                   <TableBody>
-                    {row.grades.map((historyRow: any) => (
-                      <TableRow key={historyRow.gradeId}>
-                        <TableCell align="left">{historyRow.gradeId}</TableCell>
-                        <TableCell>{historyRow.subjects.subjectname}</TableCell>
-                        <TableCell>{historyRow.exams.examCode}</TableCell>
-                        <TableCell align="left">{historyRow.grade}</TableCell>
+                    {row.requests.map((request: any) => (
+                      <TableRow key={request.requestId}>
+                        <TableCell align="left">{request.requestId}</TableCell>
+                        <TableCell>{request.bloodtypes.bloodname}</TableCell>
+                        <TableCell align="left">{request.amount}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

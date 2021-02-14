@@ -14,21 +14,20 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Pagination from "@material-ui/lab/Pagination";
 import { blue } from "@material-ui/core/colors";
 import React, { useState, useEffect } from "react";
-import StudentForm from "../Forms/studentForm";
 import Row from "./row";
 import {
-	deleteStudent,
-	getStudents,
-	postStudents,
-	updateStudent,
-} from "../../services/studentServices";
+	deleteDonor,
+	getDonors,
+	postDonors,
+	updateDonor,
+} from "../../services/donorServices";
 import Progress from "../Loading/progress";
-import { getTeachers } from "../../services/teacherServices";
-import { getLevels } from "../../services/levelServices";
+import { getBloodTypes } from "../../services/bloodtypeServices";
 import Search from "../Search/search";
 import SnackPar from "../Common/snackpar";
 import FilterSize from "../Common/filter";
 import { Link } from "react-router-dom";
+import DonorForm from "../Forms/donorForm";
 
 const useRowStyles = makeStyles((theme) => ({
 	root: {
@@ -63,12 +62,11 @@ const useRowStyles = makeStyles((theme) => ({
 const isSearched = (value: string) => ({ firstname }: any) =>
 	firstname.toLowerCase().includes(value.toLowerCase());
 
-export default function StudentTable() {
+export default function DonorTable() {
 	const classes = useRowStyles();
-	const [students, setStudentDatas] = useState<Array<{}>>([]);
+	const [donors, setDonorData] = useState<Array<{}>>([]);
 	const [isLoading, setLoading] = useState(true);
-	const [teacherDatas, setTeacherDatas] = useState<Array<{}>>([]);
-	const [levelDatas, setLevelDatas] = useState<Array<{}>>([]);
+	const [bloodtypedatas, setBloodTypeData] = useState<Array<{}>>([]);
 	const [value, setValue] = useState<string>("");
 	const [open, setOpen] = useState(false);
 	const [errors, setErrors] = useState("");
@@ -77,14 +75,13 @@ export default function StudentTable() {
 	const [page, setPage] = useState(1);
 	const [size, setSize] = useState(10);
 	const [totalItems, setTotalItems] = useState(0);
-	const [techItems, setTechItems] = useState(0);
-	const [levItems, setLevItems] = useState(0);
+	const [bloodTypeItems, setBloodTypeItems] = useState(0);
 
 	const handleSubmit = async ({ row }: any) => {
 		try {
-			const { data } = await postStudents(row);
-			const newArray = [...students, data];
-			setStudentDatas(newArray);
+			const { data } = await postDonors(row);
+			const newArray = [...donors, data];
+			setDonorData(newArray);
 			handleClick("Sucessfully posted!");
 		} catch (err) {
 			handleClick("err!");
@@ -94,11 +91,11 @@ export default function StudentTable() {
 
 	const handleUpdate = async ({ row, id, dataindex }: any) => {
 		try {
-			const { data } = await updateStudent({ row, id });
-			const state = [...students];
+			const { data } = await updateDonor({ row, id });
+			const state = [...donors];
 			const index = state.indexOf(dataindex);
 			state[index] = { ...data };
-			setStudentDatas(state);
+			setDonorData(state);
 			handleClick("Sucessfully updated!");
 		} catch (err) {
 			handleClick("err!");
@@ -116,45 +113,38 @@ export default function StudentTable() {
 
 	const handleDelete = async (id: number) => {
 		try {
-			const newArray = students.filter(
-				(student: any) => student.studentId !== id
+			const newArray = donors.filter(
+				(donor: any) => donor.donorId !== id
 			);
-			setStudentDatas(newArray);
-			await deleteStudent(id);
+			setDonorData(newArray);
+			await deleteDonor(id);
 			handleClick("Sucessfully deleted!");
 		} catch (err) {
 			handleClick("err!");
 			setErrors(err.message);
-			const cloneStudents = [...students];
-			setStudentDatas(cloneStudents);
+			const clonedonors = [...donors];
+			setDonorData(clonedonors);
 		}
 	};
 	useEffect(() => {
-		const fetchStudents = async (page: number, size: number) => {
-			const { data } = await getStudents(page, size);
+		const fetchDonor = async (page: number, size: number) => {
+			const { data } = await getDonors(page, size);
 			setTotalItems(data.totalItems);
 			setTotalPages(data.totalPages);
-			setStudentDatas(data.students);
+			setDonorData(data.donors);
 			setLoading(false);
 		};
-		fetchStudents(page - 1, size);
+		fetchDonor(page - 1, size);
 	}, [page, size]);
 
 	useEffect(() => {
-		const fetchTeachers = async (page: number, size: number) => {
-			const { data } = await getTeachers((page = 0), size);
-			setTechItems(data.totalItems);
-			setTeacherDatas(data.teachers);
+		const fetchBloodTypes = async (page: number, size: number) => {
+			const { data } = await getBloodTypes((page = 0), size);
+			setBloodTypeItems(data.totalItems);
+			setBloodTypeData(data.bloodtypes);
 		};
-		const fetchLevels = async (page: number, size: number) => {
-			const { data } = await getLevels((page = 0), size);
-			setLevItems(data.totalItems);
-			setLevelDatas(data.levels);
-		};
-
-		fetchTeachers(page - 1, techItems);
-		fetchLevels(page - 1, levItems);
-	}, [page, techItems, levItems]);
+		fetchBloodTypes(page - 1, bloodTypeItems);
+	}, [page, bloodTypeItems]);
 
 	const handleChange = (e: any) => {
 		if (e.target.value) {
@@ -211,9 +201,9 @@ export default function StudentTable() {
 								<Link
 									className={classes.blueLight}
 									to={{
-										pathname: "/dashboard/allstudentsview",
+										pathname: "/dashboard/alldonorsview",
 										state: {
-											students,
+											donors,
 										},
 									}}
 								>
@@ -224,10 +214,9 @@ export default function StudentTable() {
 					</Box>
 					<Box p={1}>
 						<Tooltip title="Add">
-							<StudentForm
+							<DonorForm
 								onSubmit={handleSubmit}
-								teachers={teacherDatas}
-								levels={levelDatas}
+								bloodtypes={bloodtypedatas}
 								name="add"
 								row="baylood"
 							/>
@@ -244,7 +233,7 @@ export default function StudentTable() {
 							<TableRow>
 								<TableCell />
 								<TableCell />
-								<TableCell>Student ID</TableCell>
+								<TableCell>Donor ID</TableCell>
 								<TableCell align="left">First Name</TableCell>
 								<TableCell align="left">Second Name</TableCell>
 								<TableCell align="left">Last Name</TableCell>
@@ -260,17 +249,16 @@ export default function StudentTable() {
 							</TableRow>
 						</TableHead>
 
-						{students && (
+						{donors && (
 							<TableBody>
-								{students
+								{donors
 									.filter(isSearched(value))
-									.map((student: any) => (
+									.map((donor: any) => (
 										<Row
 											onDelete={handleDelete}
-											key={student.studentId}
-											row={student}
-											levels={levelDatas}
-											teachers={teacherDatas}
+											key={donor.donorId}
+											row={donor}
+											bloodtypes={bloodtypedatas}
 											onUpdate={handleUpdate}
 										/>
 									))}

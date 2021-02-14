@@ -15,14 +15,13 @@ import Grid from "@material-ui/core/Grid";
 import GradeForm from "../Forms/gradeForm";
 import Progress from "../Loading/progress";
 import {
-  deleteGrade,
-  getGrades,
-  postGrade,
-  updateGrade,
-} from "../../services/gradeServices";
-import { getExams } from "../../services/examServices";
-import { getStudents } from "../../services/studentServices";
-import { getSubjects } from "../../services/subjectService";
+  deleteRequest,
+  getRequests,
+  postRequests,
+  updateRequest,
+} from "../../services/requestServices";
+import { getBloodTypes } from "../../services/bloodtypeServices";
+import { getDonors } from "../../services/donorServices";
 import SnackPar from "../Common/snackpar";
 import GradePopForm from "../Forms/PopUpForms/gradePop";
 import FilterSize from "../Common/filter";
@@ -69,19 +68,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const isSearched = (value: string) => ({ exams }: any) =>
-  exams.examCode.toLowerCase().includes(value.toLowerCase());
+const isSearched = (value: string) => ({ bloodtypes }: any) =>
+  bloodtypes.examCode.toLowerCase().includes(value.toLowerCase());
 
-export default function GradeTable() {
+export default function RequestTable() {
   const classes = useStyles();
-  const [grades, setGrades] = useState<Array<{}>>([]);
-  const [subjects, setSubjects] = useState<Array<{}>>([]);
-  const [students, setStudents] = useState<Array<{}>>([]);
+  const [requests, setRequests] = useState<Array<{}>>([]);
+  const [donors, setDonors] = useState<Array<{}>>([]);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState(null);
   const [value, setValue] = useState<string>("");
-  const [exams, setExams] = useState<Array<{}>>([]);
+  const [bloodtypes, setBloodTypes] = useState<Array<{}>>([]);
   const [isLoading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(1);
@@ -92,25 +90,25 @@ export default function GradeTable() {
   const [gradeItems, setGradeItems] = useState(0);
 
   useEffect(() => {
-    const fetchGrades = async (page: number, size: number) => {
-      const { data } = await getGrades(page, size);
+    const fetchrequests = async (page: number, size: number) => {
+      const { data } = await getRequests(page, size);
       setTotalPages(data.totalPages);
       setTotalItems(data.totalItems);
-      setGrades(data.grades);
+      setRequests(data.requests);
       setLoading(false);
     };
 
-    fetchGrades(page - 1, size);
+    fetchrequests(page - 1, size);
   }, [page, size]);
 
   useEffect(() => {
-    const fetchStudents = async (page: number, size: number) => {
-      const { data } = await getStudents((page = 0), size);
+    const fetchdonors = async (page: number, size: number) => {
+      const { data } = await getDonors((page = 0), size);
       setStudItems(data.totalItems);
-      setStudents(data.students);
+      setDonors(data.donors);
     };
 
-    fetchStudents(page - 1, studItems);
+    fetchdonors(page - 1, studItems);
   }, [page, studItems]);
 
   useEffect(() => {
@@ -123,12 +121,12 @@ export default function GradeTable() {
   }, [page, subItems]);
 
   useEffect(() => {
-    const fetchExams = async (page: number, size: number) => {
-      const { data } = await getExams((page = 0), size);
+    const fetchbloodtypes = async (page: number, size: number) => {
+      const { data } = await getBloodTypes((page = 0), size);
       setGradeItems(data.totalItems);
-      setExams(data.exams);
+      setBloodTypes(data.bloodtypes);
     };
-    fetchExams(page - 1, gradeItems);
+    fetchbloodtypes(page - 1, gradeItems);
   }, [page, gradeItems]);
 
   const fetchPaginatedData = (e: any, page: number) => {
@@ -142,9 +140,9 @@ export default function GradeTable() {
   const handleSubmit = async ({ row }: any) => {
     console.log(row);
     try {
-      const { data } = await postGrade(row);
-      const newGrades = [...grades, data];
-      setGrades(newGrades);
+      const { data } = await postRequests(row);
+      const newrequests = [...requests, data];
+      setRequests(newrequests);
       handleClick("Sucessfully posted!");
     } catch (err) {
       handleClick("Sucessfully posted!");
@@ -153,28 +151,28 @@ export default function GradeTable() {
   };
   const handleDelete = async (id: number) => {
     try {
-      const cloneGrades = [...grades];
-      const newGrades = cloneGrades.filter(
+      const clonerequests = [...requests];
+      const newrequests = clonerequests.filter(
         (grade: any) => grade.gradeId !== id
       );
-      setGrades(newGrades);
-      await deleteGrade(id);
+      setRequests(newrequests);
+      await deleteRequest(id);
       handleClick("Sucessfully deleted!");
     } catch (err) {
       handleClick("Sucessfully deleted!");
       setErrors(err.message);
-      const cloneGrades = [...grades];
-      setGrades(cloneGrades);
+      const clonerequests = [...requests];
+      setRequests(clonerequests);
     }
   };
 
   const handleUpdate = async ({ row, id, gradeData }: any) => {
     try {
-      const { data } = await updateGrade({ row, id });
-      const cloneGrades = [...grades];
-      const index = cloneGrades.indexOf(gradeData);
-      cloneGrades[index] = { ...data };
-      setGrades(cloneGrades);
+      const { data } = await updateRequest({ row, id });
+      const clonerequests = [...requests];
+      const index = clonerequests.indexOf(gradeData);
+      clonerequests[index] = { ...data };
+      setRequests(clonerequests);
       handleClick("Sucessfully updated!");
     } catch (err) {
       handleClick("Sucessfully updated!");
@@ -242,29 +240,29 @@ export default function GradeTable() {
                       <TableCell align="center">Actions</TableCell>
                     </TableRow>
                   </TableHead>
-                  {grades && (
+                  {requests && (
                     <TableBody>
-                      {grades.filter(isSearched(value)).map((grade: any) => (
+                      {requests.filter(isSearched(value)).map((grade: any) => (
                         <TableRow key={grade.gradeId}>
                           <TableCell component="th" scope="row">
                             {grade.gradeId}
                           </TableCell>
                           <TableCell>
-                            {grade.students.firstname}{" "}
-                            {grade.students.secondname}{" "}
-                            {grade.students.lastname}
+                            {grade.donors.firstname}{" "}
+                            {grade.donors.secondname}{" "}
+                            {grade.donors.lastname}
                           </TableCell>
                           <TableCell>{grade.subjects.subjectname}</TableCell>
-                          <TableCell>{grade.exams.examCode}</TableCell>
+                          <TableCell>{grade.bloodtypes.examCode}</TableCell>
                           <TableCell>{grade.grade}</TableCell>
 
                           <TableCell style={{ display: "flex" }}>
                             <GradePopForm
                               onSubmit={handleUpdate}
                               grade={grade}
-                              students={students}
+                              donors={donors}
                               subjects={subjects}
-                              exams={exams}
+                              bloodtypes={bloodtypes}
                             />
 
                             <DeletePopUp
@@ -296,9 +294,9 @@ export default function GradeTable() {
                 onSubmit={handleSubmit}
                 name="add"
                 grade="grade"
-                students={students}
+                donors={donors}
                 subjects={subjects}
-                exams={exams}
+                bloodtypes={bloodtypes}
               />
             </Paper>
           </Grid>
