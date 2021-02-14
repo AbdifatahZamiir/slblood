@@ -58,7 +58,7 @@ const RequestForm: React.FC<Props> = ({
 				<Select {...props} {...field}>
 					{bloodtypes.map((bloodtype: any) => (
 						<MenuItem key={bloodtype.bloodtypeId} value={bloodtype.bloodtypeId}>
-							{bloodtype.bloodtypeCode}
+							{bloodtype.bloodname}
 						</MenuItem>
 					))}
 				</Select>
@@ -89,8 +89,7 @@ const RequestForm: React.FC<Props> = ({
 	const validationSchema: any = Yup.object({
 		bloodtypeId: Yup.number().required("bloodtypeId is required"),
 		donorId: Yup.number().required("donorId is required"),
-		subjectId: Yup.number().required("subjectId is required"),
-		amount: Yup.number().required("amount is required").max(100),
+		amount: Yup.number().required("amount is required")
 	});
 
 	const addValues = {
@@ -133,7 +132,7 @@ const RequestForm: React.FC<Props> = ({
 									labelId="bloodtypeId"
 									name="bloodtypeId"
 									id="bloodtypeId"
-									label="bloodtypeId"
+									label="Blood Type"
 									component={BloodTypeField}
 								/>
 							</div>
@@ -147,7 +146,7 @@ const RequestForm: React.FC<Props> = ({
 									labelId="donorId"
 									name="donorId"
 									id="donorId"
-									label="donorId"
+									label="Donor ID"
 									component={DonorField}
 								/>
 							</div>
@@ -160,7 +159,7 @@ const RequestForm: React.FC<Props> = ({
 								<Field
 									variant="outlined"
 									name="request"
-									label="request"
+									label="Request"
 									type="number"
 									helperText={
 										errors.request && touched.request

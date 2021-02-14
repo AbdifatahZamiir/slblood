@@ -25,254 +25,248 @@ import { IconButton } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		"& .MuiTextField-root": {
-			margin: theme.spacing(1),
-			width: "35ch",
-			height: "10ch",
-		},
-	},
-	formControl: {
-		marginRight: theme.spacing(1),
-		minWidth: 200,
-	},
-	blueLight: {
-		color: blue[600],
-	},
-	selectEmpty: {
-		marginTop: theme.spacing(1),
-	},
-	fab: {
-		margin: theme.spacing(2),
-		backgroundColor: blue[600],
-		color: theme.palette.getContrastText(pink[500]),
-	},
+  root: {
+    "& .MuiTextField-root": {
+      margin: theme.spacing(1),
+      width: "35ch",
+      height: "10ch",
+    },
+  },
+  formControl: {
+    marginRight: theme.spacing(1),
+    minWidth: 200,
+  },
+  blueLight: {
+    color: blue[600],
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(1),
+  },
+  fab: {
+    margin: theme.spacing(2),
+    backgroundColor: blue[600],
+    color: theme.palette.getContrastText(pink[500]),
+  },
 }));
 
 interface Props {
-	bloodtypes: any;
-	onSubmit: (data: any) => void;
-	row?: any;
-	name: string;
+  bloodtypes: any;
+  onSubmit: (data: any) => void;
+  row?: any;
+  name: string;
 }
 
-const DonorForm: React.FC<Props> = ({
-	bloodtypes,
-	onSubmit,
-	row,
-	name,
-}) => {
-	const validationSchema: any = Yup.object({
-		firstname: Yup.string().required("firstname is required"),
-		secondname: Yup.string().required("secondname is required"),
-		lastname: Yup.string().required("lastname is required"),
-		city: Yup.string().required("city is required"),
-		contact: Yup.number().required("contact is required"),
-		bloodtypeId: Yup.number().required("bloodtype name is required"),
-		gender: Yup.string().required("Gender is required"),
-	});
-	const InputField = ({ field, form, ...props }: any) => {
-		return <TextField {...props} {...field} />;
-	};
-	const BloodTypeField = ({ field, form, ...props }: any) => {
-		return (
-			<FormControl variant="outlined" className={classes.formControl}>
-				<InputLabel id="demo-simple-select-outlined-label">
-					bloodtypeId
-				</InputLabel>
-				<Select {...props} {...field}>
-					{bloodtypes.map((bloodtype: any) => (
-						<MenuItem key={bloodtype.bloodtypeId} value={bloodtype.bloodtypeId}>
-							{bloodtype.firstname} {bloodtype.secondname}
-						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
-		);
-	};
+const DonorForm: React.FC<Props> = ({ bloodtypes, onSubmit, row, name }) => {
+  const validationSchema: any = Yup.object({
+    firstname: Yup.string().required("firstname is required"),
+    secondname: Yup.string().required("secondname is required"),
+    lastname: Yup.string().required("lastname is required"),
+    city: Yup.string().required("city is required"),
+    contact: Yup.number().required("contact is required"),
+    bloodtypeId: Yup.number().required("bloodtype name is required"),
+    gender: Yup.string().required("Gender is required"),
+  });
+  const InputField = ({ field, form, ...props }: any) => {
+    return <TextField {...props} {...field} />;
+  };
+  const BloodTypeField = ({ field, form, ...props }: any) => {
+    return (
+      <FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel id="demo-simple-select-outlined-label">
+          bloodtypeId
+        </InputLabel>
+        <Select {...props} {...field}>
+          {bloodtypes.map((bloodtype: any) => (
+            <MenuItem key={bloodtype.bloodtypeId} value={bloodtype.bloodtypeId}>
+              {bloodtype.bloodname} 
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    );
+  };
 
+  const genderSelect = ({ field, form, ...props }: any) => {
+    return (
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Gender</FormLabel>
+        <RadioGroup {...props} {...field}>
+          {["male", "female"].map((option) => (
+            <div>
+              <FormControlLabel
+                value={option}
+                control={<Radio />}
+                label={option}
+              />
+            </div>
+          ))}
+        </RadioGroup>
+      </FormControl>
+    );
+  };
 
-	const genderSelect = ({ field, form, ...props }: any) => {
-		return (
-			<FormControl component="fieldset">
-				<FormLabel component="legend">Gender</FormLabel>
-				<RadioGroup {...props} {...field}>
-					{["male", "female"].map((option) => (
-						<div>
-							<FormControlLabel
-								value={option}
-								control={<Radio />}
-								label={option}
-							/>
-						</div>
-					))}
-				</RadioGroup>
-			</FormControl>
-		);
-	};
+  const addValues = {
+    firstname: "",
+    secondname: "",
+    lastname: "",
+    city: "",
+    contact: undefined,
+    gender: "",
+    bloodtypeId: undefined,
+  };
 
-	const addValues = {
-		firstname: "",
-		secondname: "",
-		lastname: "",
-		city: "",
-		contact: undefined,
-		gender: "",
-		bloodtypeId: undefined,
-	};
+  const editValues = row && {
+    firstname: row.firstname,
+    secondname: row.secondname,
+    lastname: row.lastname,
+    city: row.city,
+    contact: row.contact,
+    gender: row.gender,
+    bloodtypeId: row.bloodtypeId,
+  };
 
-	const editValues = row && {
-		firstname: row.firstname,
-		secondname: row.secondname,
-		lastname: row.lastname,
-		city: row.city,
-		contact: row.contact,
-		gender: row.gender,
-		bloodtypeId: row.bloodtypeId,
-	};
+  const values = name === "edit" ? editValues : addValues;
+  const classes = useStyles();
 
-	const values = name === "edit" ? editValues : addValues;
-	const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
 
-	const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-	const handleClickOpen = () => {
-		setOpen(true);
-	};
-
-	const handleClose = () => {
-		setOpen(false);
-	};
-	return (
-		<div>
-			<div>
-				{name === "edit" ? (
-					<Tooltip title="Edit">
-						<IconButton onClick={handleClickOpen} aria-label="edit">
-							<EditIcon className={classes.blueLight} />
-						</IconButton>
-					</Tooltip>
-				) : (
-					<Tooltip title="Add" aria-label="add">
-						<Fab
-							className={classes.fab}
-							color="secondary"
-							onClick={handleClickOpen}
-						>
-							<AddIcon />
-						</Fab>
-					</Tooltip>
-				)}
-				<Dialog
-					maxWidth="md"
-					open={open}
-					onClose={handleClose}
-					aria-labelledby="form-dialog-title"
-				>
-					<DialogTitle id="form-dialog-title">Student Form</DialogTitle>
-					<DialogContent>
-						<DialogContentText>Fill Student Information</DialogContentText>
-						<Formik
-							onSubmit={(data, { resetForm }) => {
-								onSubmit({ row: data, id: row.studentId, dataindex: row });
-								if (name !== "edit") resetForm();
-							}}
-							initialValues={values}
-							validationSchema={validationSchema}
-						>
-							{({ errors, touched, isValid }: FormikProps<any>) => (
-								<Form className={classes.root}>
-									<Field
-										variant="outlined"
-										name="firstname"
-										label="First Name"
-										helperText={
-											errors.firstname && touched.firstname
-												? errors.firstname
-												: null
-										}
-										error={touched.firstname && Boolean(errors.firstname)}
-										component={InputField}
-									/>
-									<Field
-										variant="outlined"
-										name="secondname"
-										label="Second Name"
-										helperText={
-											errors.secondname && touched.secondname
-												? errors.secondname
-												: null
-										}
-										error={touched.secondname && Boolean(errors.secondname)}
-										component={InputField}
-									/>
-									<Field
-										variant="outlined"
-										name="lastname"
-										label="Last Name"
-										helperText={
-											errors.lastname && touched.lastname
-												? errors.lastname
-												: null
-										}
-										error={touched.lastname && Boolean(errors.lastname)}
-										component={InputField}
-									/>
-									<Field
-										variant="outlined"
-										name="city"
-										label="city"
-										helperText={
-											errors.city && touched.city ? errors.city : null
-										}
-										error={touched.city && Boolean(errors.city)}
-										component={InputField}
-									/>
-									<Field
-										variant="outlined"
-										name="contact"
-										label="Contact"
-										helperText={
-											errors.contact && touched.contact ? errors.contact : null
-										}
-										error={touched.contact && Boolean(errors.contact)}
-										component={InputField}
-									/>
-									<Field
-										labelId="gender"
-										name="gender"
-										id="gender"
-										label="Gender"
-										component={genderSelect}
-									/>
-									<Field
-										labelId="bloodtypeId"
-										name="bloodtypeId"
-										id="bloodtypeId"
-										label="bloodtypeId"
-										component={BloodTypeField}
-									/>
-									<DialogActions>
-										<Button onClick={handleClose} color="primary">
-											Cancel
-										</Button>
-										<Button
-											type="submit"
-											disabled={!isValid}
-											onClick={handleClose}
-											color="primary"
-										>
-											Submit
-										</Button>
-									</DialogActions>
-								</Form>
-							)}
-						</Formik>
-					</DialogContent>
-				</Dialog>
-			</div>
-		</div>
-	);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  return (
+    <div>
+      <div>
+        {name === "edit" ? (
+          <Tooltip title="Edit">
+            <IconButton onClick={handleClickOpen} aria-label="edit">
+              <EditIcon className={classes.blueLight} />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title="Add" aria-label="add">
+            <Fab
+              className={classes.fab}
+              color="secondary"
+              onClick={handleClickOpen}
+            >
+              <AddIcon />
+            </Fab>
+          </Tooltip>
+        )}
+        <Dialog
+          maxWidth="md"
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Student Form</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Fill Student Information</DialogContentText>
+            <Formik
+              onSubmit={(data, { resetForm }) => {
+                onSubmit({ row: data, id: row.donorId, dataindex: row });
+                if (name !== "edit") resetForm();
+              }}
+              initialValues={values}
+              validationSchema={validationSchema}
+            >
+              {({ errors, touched, isValid }: FormikProps<any>) => (
+                <Form className={classes.root}>
+                  <Field
+                    variant="outlined"
+                    name="firstname"
+                    label="First Name"
+                    helperText={
+                      errors.firstname && touched.firstname
+                        ? errors.firstname
+                        : null
+                    }
+                    error={touched.firstname && Boolean(errors.firstname)}
+                    component={InputField}
+                  />
+                  <Field
+                    variant="outlined"
+                    name="secondname"
+                    label="Second Name"
+                    helperText={
+                      errors.secondname && touched.secondname
+                        ? errors.secondname
+                        : null
+                    }
+                    error={touched.secondname && Boolean(errors.secondname)}
+                    component={InputField}
+                  />
+                  <Field
+                    variant="outlined"
+                    name="lastname"
+                    label="Last Name"
+                    helperText={
+                      errors.lastname && touched.lastname
+                        ? errors.lastname
+                        : null
+                    }
+                    error={touched.lastname && Boolean(errors.lastname)}
+                    component={InputField}
+                  />
+                  <Field
+                    variant="outlined"
+                    name="city"
+                    label="city"
+                    helperText={
+                      errors.city && touched.city ? errors.city : null
+                    }
+                    error={touched.city && Boolean(errors.city)}
+                    component={InputField}
+                  />
+                  <Field
+                    variant="outlined"
+                    name="contact"
+                    label="Contact"
+                    helperText={
+                      errors.contact && touched.contact ? errors.contact : null
+                    }
+                    error={touched.contact && Boolean(errors.contact)}
+                    component={InputField}
+                  />
+                  <Field
+                    labelId="gender"
+                    name="gender"
+                    id="gender"
+                    label="Gender"
+                    component={genderSelect}
+                  />
+                  <Field
+                    labelId="bloodtypeId"
+                    name="bloodtypeId"
+                    id="bloodtypeId"
+                    label="bloodtypeId"
+                    component={BloodTypeField}
+                  />
+                  <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={!isValid}
+                      onClick={handleClose}
+                      color="primary"
+                    >
+                      Submit
+                    </Button>
+                  </DialogActions>
+                </Form>
+              )}
+            </Formik>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </div>
+  );
 };
 
 export default DonorForm;

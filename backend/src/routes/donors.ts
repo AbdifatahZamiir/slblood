@@ -77,7 +77,7 @@ donors.post("/", auth, async (req, res) => {
                 .status(400)
                 .send(`bloodtype with the id: ${bloodtypeId}, was not found`);
 
-        const { error } = validatedonor(req.body);
+        const { error } = validateDonor(req.body);
         if (error) return res.status(400).send(error.details[0].message);
 
         const donor = await prisma.donors.create({
@@ -110,7 +110,7 @@ donors.put("/:id", auth, async (req, res) => {
         const { id } = req.params;
         const { bloodtypeId } = req.body;
 
-        const { error } = validatedonor(req.body);
+        const { error } = validateDonor(req.body);
         if (error) return res.status(400).send(error.details[0].message);
 
         const donor = await prisma.donors.update({
@@ -148,7 +148,7 @@ donors.delete("/:id", auth, async (req, res) => {
     }
 });
 
-function validatedonor(req: Request) {
+function validateDonor(req: Request) {
     const schema = Joi.object({
         firstname: Joi.string().min(2).max(50).required(),
         secondname: Joi.string().min(2).max(50).required(),
