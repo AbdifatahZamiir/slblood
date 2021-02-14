@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model bloodtypes {
+  bloodtypeId Int        @id @default(autoincrement())
+  bloodname   String?
+  donors      donors[]
+  requests    requests[]
+}
+
+model donors {
+  donorId     Int            @id @default(autoincrement())
+  firstname   String
+  secondname  String
+  lastname    String?
+  city        String?
+  gender      donors_gender?
+  contact     String
+  createdAt   DateTime?      @default(now())
+  updatedAt   DateTime?      @default(now())
+  bloodtypeId Int?
+  bloodtypes  bloodtypes?    @relation(fields: [bloodtypeId], references: [bloodtypeId])
+  requests    requests[]
+
+  @@index([bloodtypeId], name: "bloodtypesIndex")
+}
+
+model requests {
+  requestId   Int         @id @default(autoincrement())
+  donorId     Int?
+  amount      Int?
+  bloodtypeId Int?
+  bloodtypes  bloodtypes? @relation(fields: [bloodtypeId], references: [bloodtypeId])
+  donors      donors?     @relation(fields: [donorId], references: [donorId])
+
+  @@index([bloodtypeId], name: "bloodtypeIndex")
+  @@index([donorId], name: "donorIndex")
+}
+
+model users {
+  userId   Int     @id @default(autoincrement())
+  username String?
+  email    String  @unique
+  password String
+}
+
+enum donors_gender {
+  male
+  female
+}
