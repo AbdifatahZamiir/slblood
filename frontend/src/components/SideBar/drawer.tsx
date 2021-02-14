@@ -7,7 +7,6 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { mainListItems } from "./listItems";
-import amano from "../images/amanoo.png";
 
 const drawerWidth = 240;
 
@@ -68,7 +67,6 @@ const DrawerCom = (props: Props) => {
       open={props.open}
     >
       <div className={classes.toolbarIcon}>
-        <img src={amano} className={classes.amanoImage} alt="amaano logo" />
 
         <IconButton
           onClick={props.onHandleDrawerClose}

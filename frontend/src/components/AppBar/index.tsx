@@ -6,7 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import { blue } from "@material-ui/core/colors";
+import { red } from "@material-ui/core/colors";
 import Menu from "./menu";
 
 const drawerWidth = 240;
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) =>
     },
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
-      backgroundColor: blue[600],
+      backgroundColor: red[600],
       transition: theme.transitions.create(["width", "margin"], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -82,7 +82,7 @@ const Index = (props: Props) => {
           noWrap
           className={classes.title}
         >
-          Amaano Quran Online
+          Somaliland Blood Bank
         </Typography>
 
         <IconButton color="inherit">
