@@ -32,99 +32,77 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
 	onSubmit: (data: any) => void;
 	name: string;
-	students: any;
-	subjects: any;
-	grade?: any;
-	exams: any;
+	donors: any;
+	request?: any;
+	bloodtypes: any;
 	onClick?: () => void;
 }
 
-const GradeForm: React.FC<Props> = ({
+const RequestForm: React.FC<Props> = ({
 	onSubmit,
-	exams,
+	bloodtypes,
 	name,
-	grade,
-	subjects,
-	students,
+	request,
+	donors,
 	onClick,
 }) => {
 	const InputField = ({ field, form, ...props }: any) => {
 		return <TextField {...props} {...field} />;
 	};
-	const ExamField = ({ field, form, ...props }: any) => {
+	const BloodTypeField = ({ field, form, ...props }: any) => {
 		return (
 			<FormControl variant="outlined" className={classes.formControl}>
 				<InputLabel id="demo-simple-select-outlined-label">
-					examId
+					bloodtypeId
 				</InputLabel>
 				<Select {...props} {...field}>
-					{exams.map((exam: any) => (
-						<MenuItem key={exam.examId} value={exam.examId}>
-							{exam.examCode}
+					{bloodtypes.map((bloodtype: any) => (
+						<MenuItem key={bloodtype.bloodtypeId} value={bloodtype.bloodtypeId}>
+							{bloodtype.bloodtypeCode}
 						</MenuItem>
 					))}
 				</Select>
 			</FormControl>
 		);
 	};
-	const StudentField = ({ field, form, ...props }: any) => {
+	const DonorField = ({ field, form, ...props }: any) => {
 		return (
 			<FormControl variant="outlined" className={classes.formControl}>
 				<InputLabel id="demo-simple-select-outlined-label">
-					StudentId
+					donorId
 				</InputLabel>
 				<Select {...props} {...field}>
-					{students.map((student: any) => (
+					{donors.map((donor: any) => (
 						<MenuItem
-							key={student.studentId}
-							value={student.studentId}
+							key={donor.donorId}
+							value={donor.donorId}
 						>
-							{student.firstname} {student.secondname}{" "}
-							{student.lastname}
+							{donor.firstname} {donor.secondname}{" "}
+							{donor.lastname}
 						</MenuItem>
 					))}
 				</Select>
 			</FormControl>
 		);
 	};
-	const SubjectField = ({ field, form, ...props }: any) => {
-		return (
-			<FormControl variant="outlined" className={classes.formControl}>
-				<InputLabel id="demo-simple-select-outlined-label">
-					SubjectId
-				</InputLabel>
-				<Select {...props} {...field}>
-					{subjects.map((subject: any) => (
-						<MenuItem
-							key={subject.subjectId}
-							value={subject.subjectId}
-						>
-							{subject.subjectname}
-						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
-		);
-	};
+
 	const validationSchema: any = Yup.object({
-		examId: Yup.number().required("examId is required"),
-		studentId: Yup.number().required("studentId is required"),
+		bloodtypeId: Yup.number().required("bloodtypeId is required"),
+		donorId: Yup.number().required("donorId is required"),
 		subjectId: Yup.number().required("subjectId is required"),
-		grade: Yup.number().required("grade is required").max(100),
+		amount: Yup.number().required("amount is required").max(100),
 	});
 
 	const addValues = {
-		examId: undefined,
-		studentId: undefined,
-		subjectId: undefined,
-		grade: undefined,
+		bloodtypeId: undefined,
+		donorId: undefined,
+		amount: undefined,
 	};
 
-	const editValues = grade && {
-		examId: grade.examId,
-		studentId: grade.studentId,
-		subjectId: grade.subjectId,
-		grade: grade.grade,
+	const editValues = request && {
+		bloodtypeId: request.bloodtypeId,
+		donorId: request.donorId,
+		amount: request.amount,
 	};
 	const values = name === "edit" ? editValues : addValues;
 	const classes = useStyles();
@@ -133,8 +111,8 @@ const GradeForm: React.FC<Props> = ({
 			onSubmit={(data, { resetForm }) => {
 				onSubmit({
 					row: data,
-					id: grade.gradeId,
-					gradeData: grade,
+					id: request.requestId,
+					requestData: request,
 				});
 				if (name !== "edit") resetForm();
 			}}
@@ -152,11 +130,11 @@ const GradeForm: React.FC<Props> = ({
 								}}
 							>
 								<Field
-									labelId="examId"
-									name="examId"
-									id="examId"
-									label="examId"
-									component={ExamField}
+									labelId="bloodtypeId"
+									name="bloodtypeId"
+									id="bloodtypeId"
+									label="bloodtypeId"
+									component={BloodTypeField}
 								/>
 							</div>
 							<div
@@ -166,25 +144,11 @@ const GradeForm: React.FC<Props> = ({
 								}}
 							>
 								<Field
-									labelId="studentId"
-									name="studentId"
-									id="studentId"
-									label="studentId"
-									component={StudentField}
-								/>
-							</div>
-							<div
-								style={{
-									paddingBottom: "20px",
-									paddingRight: "20px",
-								}}
-							>
-								<Field
-									labelId="subjectId"
-									name="subjectId"
-									id="subjectId"
-									label="SubjectId"
-									component={SubjectField}
+									labelId="donorId"
+									name="donorId"
+									id="donorId"
+									label="donorId"
+									component={DonorField}
 								/>
 							</div>
 							<div
@@ -195,16 +159,16 @@ const GradeForm: React.FC<Props> = ({
 							>
 								<Field
 									variant="outlined"
-									name="grade"
-									label="Grade"
+									name="request"
+									label="request"
 									type="number"
 									helperText={
-										errors.grade && touched.grade
-											? errors.grade
+										errors.request && touched.request
+											? errors.request
 											: null
 									}
 									error={
-										touched.grade && Boolean(errors.grade)
+										touched.request && Boolean(errors.request)
 									}
 									component={InputField}
 								/>
@@ -229,4 +193,4 @@ const GradeForm: React.FC<Props> = ({
 	);
 };
 
-export default GradeForm;
+export default RequestForm;

@@ -12,7 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Pagination from "@material-ui/lab/Pagination";
 import React, { Fragment, useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
-import GradeForm from "../Forms/gradeForm";
+import RequestForm from "../Forms/requestForm";
 import Progress from "../Loading/progress";
 import {
   deleteRequest,
@@ -23,7 +23,7 @@ import {
 import { getBloodTypes } from "../../services/bloodtypeServices";
 import { getDonors } from "../../services/donorServices";
 import SnackPar from "../Common/snackpar";
-import GradePopForm from "../Forms/PopUpForms/gradePop";
+import RequestPopForm from "../Forms/PopUpForms/requestPop";
 import FilterSize from "../Common/filter";
 import Search from "../Search/search";
 import DeletePopUp from "../Forms/PopUpForms/deletePop";
@@ -85,9 +85,8 @@ export default function RequestTable() {
   const [page, setPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [size, setSize] = useState(5);
-  const [subItems, setSubItems] = useState(0);
-  const [studItems, setStudItems] = useState(0);
-  const [gradeItems, setGradeItems] = useState(0);
+  const [donorItems, setDonorItems] = useState(0);
+  const [bloodtypeItems, setBloodTypeItems] = useState(0);
 
   useEffect(() => {
     const fetchrequests = async (page: number, size: number) => {
@@ -102,32 +101,24 @@ export default function RequestTable() {
   }, [page, size]);
 
   useEffect(() => {
-    const fetchdonors = async (page: number, size: number) => {
+    const fetchDonors = async (page: number, size: number) => {
       const { data } = await getDonors((page = 0), size);
-      setStudItems(data.totalItems);
+      setDonorItems(data.totalItems);
       setDonors(data.donors);
     };
 
-    fetchdonors(page - 1, studItems);
-  }, [page, studItems]);
+    fetchDonors(page - 1, donorItems);
+  }, [page, donorItems]);
+
 
   useEffect(() => {
-    const fetchSubjects = async (page: number, size: number) => {
-      const { data } = await getSubjects((page = 0), size);
-      setSubItems(data.totalItems);
-      setSubjects(data.subjects);
-    };
-    fetchSubjects(page - 1, subItems);
-  }, [page, subItems]);
-
-  useEffect(() => {
-    const fetchbloodtypes = async (page: number, size: number) => {
+    const fetchBloodTypes = async (page: number, size: number) => {
       const { data } = await getBloodTypes((page = 0), size);
-      setGradeItems(data.totalItems);
+      setBloodTypeItems(data.totalItems);
       setBloodTypes(data.bloodtypes);
     };
-    fetchbloodtypes(page - 1, gradeItems);
-  }, [page, gradeItems]);
+    fetchBloodTypes(page - 1, bloodtypeItems);
+  }, [page, bloodtypeItems]);
 
   const fetchPaginatedData = (e: any, page: number) => {
     setPage(page);
@@ -153,7 +144,7 @@ export default function RequestTable() {
     try {
       const clonerequests = [...requests];
       const newrequests = clonerequests.filter(
-        (grade: any) => grade.gradeId !== id
+        (request: any) => request.requestId !== id
       );
       setRequests(newrequests);
       await deleteRequest(id);
@@ -166,11 +157,11 @@ export default function RequestTable() {
     }
   };
 
-  const handleUpdate = async ({ row, id, gradeData }: any) => {
+  const handleUpdate = async ({ row, id, requestData }: any) => {
     try {
       const { data } = await updateRequest({ row, id });
       const clonerequests = [...requests];
-      const index = clonerequests.indexOf(gradeData);
+      const index = clonerequests.indexOf(requestData);
       clonerequests[index] = { ...data };
       setRequests(clonerequests);
       handleClick("Sucessfully updated!");
@@ -231,42 +222,39 @@ export default function RequestTable() {
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead className={classes.head}>
                     <TableRow>
-                      <TableCell>Grade ID</TableCell>
-                      <TableCell>Student Name</TableCell>
-                      <TableCell>Subject Name</TableCell>
-                      <TableCell>Exam Code</TableCell>
-                      <TableCell>Grade</TableCell>
+                      <TableCell>Request ID</TableCell>
+                      <TableCell>Donor Name</TableCell>
+                      <TableCell>Blood Name</TableCell>
+                      <TableCell>Amount</TableCell>
 
                       <TableCell align="center">Actions</TableCell>
                     </TableRow>
                   </TableHead>
                   {requests && (
                     <TableBody>
-                      {requests.filter(isSearched(value)).map((grade: any) => (
-                        <TableRow key={grade.gradeId}>
+                      {requests.filter(isSearched(value)).map((request: any) => (
+                        <TableRow key={request.requestId}>
                           <TableCell component="th" scope="row">
-                            {grade.gradeId}
+                            {request.requestId}
                           </TableCell>
                           <TableCell>
-                            {grade.donors.firstname}{" "}
-                            {grade.donors.secondname}{" "}
-                            {grade.donors.lastname}
+                            {request.donors.firstname}{" "}
+                            {request.donors.secondname}{" "}
+                            {request.donors.lastname}
                           </TableCell>
-                          <TableCell>{grade.subjects.subjectname}</TableCell>
-                          <TableCell>{grade.bloodtypes.examCode}</TableCell>
-                          <TableCell>{grade.grade}</TableCell>
+                          <TableCell>{request.bloodtypes.bloodname}</TableCell>
+                          <TableCell>{request.amount}</TableCell>
 
                           <TableCell style={{ display: "flex" }}>
-                            <GradePopForm
+                            <RequestPopForm
                               onSubmit={handleUpdate}
-                              grade={grade}
+                              request={request}
                               donors={donors}
-                              subjects={subjects}
                               bloodtypes={bloodtypes}
                             />
 
                             <DeletePopUp
-                              item={grade.gradeId}
+                              item={request.requestId}
                               onDelete={handleDelete}
                             />
                           </TableCell>
@@ -289,13 +277,12 @@ export default function RequestTable() {
           </Grid>
           <Grid item xs={5}>
             <Paper elevation={0} variant="outlined" className={classes.paper}>
-              <h3>Grade Form</h3>
-              <GradeForm
+              <h3>request Form</h3>
+              <RequestForm
                 onSubmit={handleSubmit}
                 name="add"
-                grade="grade"
+                request="request"
                 donors={donors}
-                subjects={subjects}
                 bloodtypes={bloodtypes}
               />
             </Paper>

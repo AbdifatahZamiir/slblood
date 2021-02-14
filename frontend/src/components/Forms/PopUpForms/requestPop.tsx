@@ -6,7 +6,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import GradeForm from "../gradeForm";
+import RequestForm from "../requestForm";
 import { IconButton } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -17,12 +17,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GradePopForm({
-  grade,
+export default function RequestPopForm({
+  request,
   onSubmit,
-  students,
-  subjects,
-  exams,
+  donors,
+  bloodtypes,
 }: any) {
   const [open, setOpen] = React.useState(false);
 
@@ -48,15 +47,14 @@ export default function GradePopForm({
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">Update Grade</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">Update request</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            <GradeForm
+            <RequestForm
               onSubmit={onSubmit}
-              grade={grade}
-              subjects={subjects}
-              students={students}
-              exams={exams}
+              request={request}
+              donors={donors}
+              bloodtypes={bloodtypes}
               name="edit"
               onClick={handleClose}
             />
