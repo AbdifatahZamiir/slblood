@@ -73,7 +73,7 @@ const Home = () => {
                   style={{ marginBottom: 20 }}
                   gutterBottom
                 >
-                  Level/Graph
+                  Blood Level
                 </Typography>
                 <LevelGraph bloodtypes={bloodtypes} />
               </Paper>
