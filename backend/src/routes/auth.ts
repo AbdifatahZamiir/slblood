@@ -26,7 +26,7 @@ auth.post("/", async (req, res) => {
         return res.status(400).send("Invalid email or password");
 
     const token = jwt.sign(
-        { userId: user.userId, username: user.username, email: user.email },
+        { userId: user.userId, username: user.username, email: user.email, admin: user.isAdmin, },
         config.get("jwtPrivateKey")
     );
 

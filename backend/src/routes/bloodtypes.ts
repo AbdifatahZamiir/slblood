@@ -1,7 +1,8 @@
-import { Router, Request } from "express";
+import { Router, Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import Joi from "joi";
 import { auth } from "../middleware/auth";
+// import { admin } from "../middleware/admin";
 
 const prisma = new PrismaClient();
 const bloodtypes: Router = Router();
@@ -65,7 +66,7 @@ bloodtypes.post("/", auth, async (req, res) => {
     }
 });
 
-bloodtypes.put("/:id", auth, async (req, res) => {
+bloodtypes.put("/:id",auth , async (req: Request, res: Response) => {
     const { id } = req.params;
     const { error } = validatebloodtype(req.body);
     if (error) return res.status(400).send(error.details[0].message);

@@ -44,9 +44,10 @@ model requests {
 }
 
 model users {
-  userId   Int     @id @default(autoincrement())
+  userId   Int      @id @default(autoincrement())
   username String?
-  email    String  @unique
+  email    String   @unique
+  isAdmin  Boolean? @default(false)
   password String
 }
 

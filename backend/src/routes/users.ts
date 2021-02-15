@@ -32,11 +32,11 @@ users.post("/", async (req: Request, res: Response) => {
     req.body.password = await bcrypt.hash(req.body.password, salt);
 
     user = await prisma.users.create({
-        data: _.pick(req.body, ["username", "email", "password"]),
+        data: _.pick(req.body, ["username", "email", "password", "isAdmin"]),
     });
 
     const token = jwt.sign(
-        { userId: user.userId, username: user.username, email: user.email },
+        { userId: user.userId, username: user.username, email: user.email, isAdmin: user.isAdmin},
         config.get("jwtPrivateKey")
     );
 
@@ -81,6 +81,7 @@ function validateUser(req: Request) {
         username: Joi.string().min(5).max(50).required(),
         email: Joi.string().min(5).max(50).required().email(),
         password: Joi.string().min(5).max(50).required(),
+        isAdmin: Joi.boolean()
     });
     return schema.validate(req);
 }
