@@ -17,12 +17,13 @@ interface Props {
 const LevelGraph = ({ bloodtypes }: Props) => {
 	const ids: number[] = [];
 	bloodtypes.forEach((bloodtype: any) => {
-		const bloodtypeIds = [bloodtype.bloodtypeId];
+		const bloodtypeIds = [bloodtype.bloodname];
+
 		ids.push(...bloodtypeIds);
 	});
 
 	const data = _.values(_.groupBy(ids)).map((d) => ({
-		bloodtypeId: `level ${d[0]}`,
+		bloodtypeId: `Type ${d[0]}`,
 		bloodtypes: d.length,
 	}));
 	return (

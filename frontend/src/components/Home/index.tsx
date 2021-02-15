@@ -40,12 +40,12 @@ const Home = () => {
       const { data } = await getDonors(page, size);
       const { totalItems, donors } = data;
       setDonorItems(totalItems);
-      setBloodTypes(donors);
       setLoading(false);
     };
     const fetchBloodTypes = async () => {
       const { data } = await getBloodTypes();
-      const { totalItems } = data;
+      const { totalItems, bloodtypes } = data;
+      setBloodTypes(bloodtypes);
       setBloodTypesItems(totalItems);
       setLoading(false);
     };

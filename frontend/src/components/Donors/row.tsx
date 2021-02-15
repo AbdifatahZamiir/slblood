@@ -70,11 +70,11 @@ const Row: React.FC<Props> = (props) => {
             {row.firstname.charAt(0).toUpperCase()}
           </Avatar>
         </TableCell>
-        <TableCell align="left">{row.studentId}</TableCell>
+        <TableCell align="left">{row.donorId}</TableCell>
         <TableCell align="left">{row.firstname}</TableCell>
         <TableCell align="left">{row.secondname}</TableCell>
         <TableCell align="left">{row.lastname}</TableCell>
-        <TableCell align="left">{row.country}</TableCell>
+        <TableCell align="left">{row.city}</TableCell>
         <TableCell align="left">{row.gender}</TableCell>
         <TableCell style={{ display: "flex" }}>
           <StudentForm
