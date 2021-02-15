@@ -88,6 +88,9 @@ donors.post("/", auth, async (req, res) => {
         secondname: req.body.secondname,
         lastname: req.body.lastname,
         gender: req.body.gender,
+        weight: req.body.weight,
+        pressure: req.body.pressure,
+        aids: req.body.aids,
         contact: req.body.contact,
         city: req.body.city,
         bloodtypes: {
@@ -121,6 +124,9 @@ donors.put("/:id", auth, async (req: Request, res: Response) => {
         firstname: req.body.firstname,
         secondname: req.body.secondname,
         lastname: req.body.lastname,
+        weight: req.body.weight,
+        pressure: req.body.pressure,
+        aids: req.body.aids,
         gender: req.body.gender,
         contact: req.body.contact,
         city: req.body.city,
@@ -159,6 +165,9 @@ function validateDonor(req: Request) {
     contact: Joi.string().required(),
     bloodtypeId: Joi.number().required(),
     city: Joi.string().required(),
+    weight: Joi.number().required().min(60),
+    pressure: Joi.number().required().max(180),
+    aids: Joi.string().valid("negative", "positive").required(),
   });
   return schema.validate(req);
 }

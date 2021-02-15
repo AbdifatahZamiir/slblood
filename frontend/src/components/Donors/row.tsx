@@ -77,11 +77,12 @@ const Row: React.FC<Props> = (props) => {
             {row.firstname.charAt(0).toUpperCase()}
           </Avatar>
         </TableCell>
-        <TableCell align="left">{row.firstname}</TableCell>
-        <TableCell align="left">{row.secondname}</TableCell>
-        <TableCell align="left">{row.lastname}</TableCell>
+        <TableCell align="left">{`${row.firstname} ${row.secondname} ${row.lastname}`}</TableCell>
         <TableCell align="left">{row.city}</TableCell>
         <TableCell align="left">{row.gender}</TableCell>
+        <TableCell align="left">{row.aids}</TableCell>
+        <TableCell align="left">{row.weight}</TableCell>
+        <TableCell align="left">{row.pressure}</TableCell>
         <TableCell align="left">
           {" "}
           <Chip label={row.bloodtypes.bloodname} className={classes.red} />

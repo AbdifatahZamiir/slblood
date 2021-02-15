@@ -121,6 +121,9 @@ const RenderDonor = ({ row }: any) => {
               <TableCell align="left">City</TableCell>
               <TableCell align="left">Contact</TableCell>
               <TableCell align="left">Gender</TableCell>
+              <TableCell align="left">Aids</TableCell>
+              <TableCell align="left">Weight</TableCell>
+              <TableCell align="left">Pressure</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -144,6 +147,9 @@ const RenderDonor = ({ row }: any) => {
               <TableCell align="left" className={classes.uniqueName}>
                 {row.gender}
               </TableCell>
+              <TableCell align="left">{row.aids}</TableCell>
+                  <TableCell align="left">{row.weight}</TableCell>
+                  <TableCell align="left">{row.pressure}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

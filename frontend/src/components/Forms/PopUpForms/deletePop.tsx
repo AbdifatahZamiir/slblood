@@ -50,7 +50,7 @@ export default function DeletePopUp({ item, onDelete }: Props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Ma hubtaa inaad masaxdo ID: ${item}`}
+          {`Ma Hubtaa inaad masaxdo`}
         </DialogTitle>
         <DialogContent></DialogContent>
         <DialogActions>

@@ -80,6 +80,10 @@ const RenderDOnors = ({ donors }: any) => {
               <TableCell align="left">Contact</TableCell>
               <TableCell align="left">City</TableCell>
               <TableCell align="left">Gender</TableCell>
+              <TableCell align="left">Aids</TableCell>
+              <TableCell align="left">Weight</TableCell>
+              <TableCell align="left">Pressure</TableCell>
+
             </TableRow>
           </TableHead>
           {donors && (
@@ -99,6 +103,9 @@ const RenderDOnors = ({ donors }: any) => {
                     {donor.city}
                   </TableCell>
                   <TableCell align="left">{donor.gender}</TableCell>
+                  <TableCell align="left">{donor.aids}</TableCell>
+                  <TableCell align="left">{donor.weight}</TableCell>
+                  <TableCell align="left">{donor.pressure}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

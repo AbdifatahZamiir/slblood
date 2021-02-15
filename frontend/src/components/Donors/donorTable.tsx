@@ -2,6 +2,7 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 import Table from "@material-ui/core/Table";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import { IconButton } from "@material-ui/core";
@@ -12,7 +13,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Tooltip from "@material-ui/core/Tooltip";
 import Pagination from "@material-ui/lab/Pagination";
-import { green } from "@material-ui/core/colors";
+import { green, red, pink } from "@material-ui/core/colors";
 import React, { useState, useEffect } from "react";
 import Row from "./row";
 import {
@@ -45,6 +46,11 @@ const useRowStyles = makeStyles((theme) => ({
     color: green[600],
     height: "34px",
   },
+  donate: {
+    cursor: "pointer",
+    backgroundColor: red[500],
+    color: theme.palette.getContrastText(pink[500]),
+  },
   button: {
     cursor: `pointer`,
   },
@@ -60,8 +66,8 @@ const useRowStyles = makeStyles((theme) => ({
   },
 }));
 
-const isSearched = (value: string) => ({ firstname }: any) =>
-  firstname.toLowerCase().includes(value.toLowerCase());
+const isSearched = (value: string) => (searchterm: any) =>
+  searchterm.bloodtypes.bloodname.toLowerCase().includes(value.toLowerCase());
 
 export default function DonorTable() {
   const classes = useRowStyles();
@@ -79,6 +85,7 @@ export default function DonorTable() {
   const [bloodTypeItems, setBloodTypeItems] = useState(0);
   const { admin }: any = auth.getCurrentUser();
   const handleSubmit = async ({ row }: any) => {
+    console.log(row)
     try {
       const { data } = await postDonors(row);
       const newArray = [...donors, data];
@@ -180,12 +187,12 @@ export default function DonorTable() {
       <Container style={{ width: "100%", marginBottom: 20 }}>
         <Box display="flex" p={1}>
           <Box p={1} flexGrow={1}>
-            <Search value={value} onChange={handleChange} by="First Name" />
+            <Search value={value} onChange={handleChange} by="Blood Type" />
           </Box>
           <Box p={2}>
             <FilterSize onSize={handleSize} totalItems={totalItems} />
           </Box>
-          {admin && (
+          {admin ? (
             <>
               <Box p={3}>
                 <Tooltip title="View Report">
@@ -216,6 +223,17 @@ export default function DonorTable() {
                 </Tooltip>
               </Box>
             </>
+          ) : (
+            <Box p={1}>
+            <Tooltip title="Add">
+              <DonorForm
+                onSubmit={handleSubmit}
+                bloodtypes={bloodtypedatas}
+                name="add"
+                row="baylood"
+              />
+            </Tooltip>
+          </Box>
           )}
         </Box>
       </Container>
@@ -228,12 +246,13 @@ export default function DonorTable() {
               <TableRow>
                 <TableCell />
                 <TableCell />
-                <TableCell align="left">First Name</TableCell>
-                <TableCell align="left">Second Name</TableCell>
-                <TableCell align="left">Last Name</TableCell>
+                <TableCell align="left">Full Name</TableCell>
                 <TableCell align="left">City</TableCell>
                 <TableCell align="left">Gender</TableCell>
                 <TableCell align="left">Blood Type</TableCell>
+                <TableCell align="left">Aids</TableCell>
+                <TableCell align="left">Weight</TableCell>
+                <TableCell align="left">Pressure</TableCell>
 
                 {admin && (
                   <TableCell style={{ paddingRight: 60 }} align="center">

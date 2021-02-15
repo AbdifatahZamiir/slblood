@@ -65,6 +65,9 @@ const DonorForm: React.FC<Props> = ({ bloodtypes, onSubmit, row, name }) => {
     contact: Yup.number().required("contact is required"),
     bloodtypeId: Yup.number().required("bloodtype name is required"),
     gender: Yup.string().required("Gender is required"),
+    weight: Yup.number().required().min(60),
+    aids: Yup.string().required(),
+    pressure: Yup.number().required().max(180)
   });
   const InputField = ({ field, form, ...props }: any) => {
     return <TextField {...props} {...field} />;
@@ -78,7 +81,7 @@ const DonorForm: React.FC<Props> = ({ bloodtypes, onSubmit, row, name }) => {
         <Select {...props} {...field}>
           {bloodtypes.map((bloodtype: any) => (
             <MenuItem key={bloodtype.bloodtypeId} value={bloodtype.bloodtypeId}>
-              {bloodtype.bloodname} 
+              {bloodtype.bloodname}
             </MenuItem>
           ))}
         </Select>
@@ -104,11 +107,31 @@ const DonorForm: React.FC<Props> = ({ bloodtypes, onSubmit, row, name }) => {
       </FormControl>
     );
   };
-
+  const AidsSelect = ({ field, form, ...props }: any) => {
+    return (
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Aids</FormLabel>
+        <RadioGroup {...props} {...field}>
+          {["negative", "positive"].map((option) => (
+            <div>
+              <FormControlLabel
+                value={option}
+                control={<Radio />}
+                label={option}
+              />
+            </div>
+          ))}
+        </RadioGroup>
+      </FormControl>
+    );
+  };
   const addValues = {
     firstname: "",
     secondname: "",
     lastname: "",
+    weight: undefined,
+    pressure: undefined,
+    aids: "",
     city: "",
     contact: undefined,
     gender: "",
@@ -119,6 +142,9 @@ const DonorForm: React.FC<Props> = ({ bloodtypes, onSubmit, row, name }) => {
     firstname: row.firstname,
     secondname: row.secondname,
     lastname: row.lastname,
+    weight: row.weight,
+    pressure: row.pressure,
+    aids: row.aids,
     city: row.city,
     contact: row.contact,
     gender: row.gender,
@@ -163,9 +189,9 @@ const DonorForm: React.FC<Props> = ({ bloodtypes, onSubmit, row, name }) => {
           onClose={handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Student Form</DialogTitle>
+          <DialogTitle id="form-dialog-title">Donor Form</DialogTitle>
           <DialogContent>
-            <DialogContentText>Fill Student Information</DialogContentText>
+            <DialogContentText>Fill Donor Information</DialogContentText>
             <Formik
               onSubmit={(data, { resetForm }) => {
                 onSubmit({ row: data, id: row.donorId, dataindex: row });
@@ -240,11 +266,50 @@ const DonorForm: React.FC<Props> = ({ bloodtypes, onSubmit, row, name }) => {
                     component={genderSelect}
                   />
                   <Field
+                    labelId="aids"
+                    name="aids"
+                    id="aids"
+                    label="Aids"
+                    helperText={
+                      errors.aids && touched.aids ? errors.aids : null
+                    }
+                    error={touched.aids && Boolean(errors.aids)}
+                    component={AidsSelect}
+                  />
+                  <Field
                     labelId="bloodtypeId"
                     name="bloodtypeId"
                     id="bloodtypeId"
                     label="bloodtypeId"
                     component={BloodTypeField}
+                  />
+                  <Field
+                    labelId="weight"
+                    variant="outlined"
+                    name="weight"
+                    id="weight"
+                    type="number"
+                    label="weight"
+                    helperText={
+                      errors.weight && touched.weight ? errors.weight : null
+                    }
+                    error={touched.weight && Boolean(errors.weight)}
+                    component={InputField}
+                  />
+                  <Field
+                    labelId="pressure"
+                    variant="outlined"
+                    name="pressure"
+                    id="pressure"
+                    type="number"
+                    label="pressure"
+                    helperText={
+                      errors.pressure && touched.pressure
+                        ? errors.pressure
+                        : null
+                    }
+                    error={touched.pressure && Boolean(errors.pressure)}
+                    component={InputField}
                   />
                   <DialogActions>
                     <Button onClick={handleClose} color="primary">

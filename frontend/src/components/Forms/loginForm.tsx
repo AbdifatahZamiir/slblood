@@ -2,7 +2,7 @@ import React from "react";
 import { Field, Form, Formik, FormikProps } from "formik";
 import * as Yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
-import { blue, pink } from "@material-ui/core/colors";
+import { green, pink } from "@material-ui/core/colors";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 
 	color: {
-		backgroundColor: blue[600],
+		backgroundColor: green[600],
 		height: "6ch",
 		color: theme.palette.getContrastText(pink[500]),
 	},

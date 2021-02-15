@@ -28,6 +28,8 @@ import FilterSize from "../Common/filter";
 import Search from "../Search/search";
 import DeletePopUp from "../Forms/PopUpForms/deletePop";
 import auth from "../../services/authServices";
+import moment from "moment";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "table-cell",
@@ -68,8 +70,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const isSearched = (value: string) => ({ bloodtypes }: any) =>
-  bloodtypes.bloodname.toLowerCase().includes(value.toLowerCase());
+const isSearched = (value: string) => ({ donors }: any) =>
+  donors.contact.toLowerCase().includes(value.toLowerCase());
 
 export default function RequestTable() {
   const classes = useStyles();
@@ -203,7 +205,7 @@ export default function RequestTable() {
       <Container style={{ width: "100%", marginBottom: 10 }}>
         <Box display="flex" p={1}>
           <Box p={1} flexGrow={1}>
-            <Search value={value} onChange={handleChange} by="Exam Code" />
+            <Search value={value} onChange={handleChange} by="Phone Number" />
           </Box>
           <Box p={0}>
             <FilterSize onSize={handleSize} totalItems={totalItems} />
@@ -221,9 +223,10 @@ export default function RequestTable() {
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead className={classes.head}>
                     <TableRow>
-                      <TableCell>Request ID</TableCell>
                       <TableCell>Donor Name</TableCell>
                       <TableCell>Blood Name</TableCell>
+                      <TableCell>Phone Number</TableCell>
+                      <TableCell>Donation Date</TableCell>
                       <TableCell>Amount</TableCell>
 
                       <TableCell align="center">Actions</TableCell>
@@ -235,9 +238,6 @@ export default function RequestTable() {
                         .filter(isSearched(value))
                         .map((request: any) => (
                           <TableRow key={request.requestId}>
-                            <TableCell component="th" scope="row">
-                              {request.requestId}
-                            </TableCell>
                             <TableCell>
                               {request.donors.firstname}{" "}
                               {request.donors.secondname}{" "}
@@ -246,7 +246,15 @@ export default function RequestTable() {
                             <TableCell>
                               {request.bloodtypes.bloodname}
                             </TableCell>
-                            <TableCell>{request.amount}</TableCell>
+                            <TableCell>
+                              {request.donors.contact}
+                            </TableCell>
+                            <TableCell>
+                              {moment(request.donors.createdAt).format(
+                                "DD/MM/YYYY"
+                              )}
+                            </TableCell>
+                            <TableCell>{`${request.amount} unit`}</TableCell>
 
                             {admin && (
                               <TableCell style={{ display: "flex" }}>

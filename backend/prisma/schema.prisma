@@ -25,6 +25,9 @@ model donors {
   createdAt   DateTime?      @default(now())
   updatedAt   DateTime?      @default(now())
   bloodtypeId Int?
+  pressure    Int?
+  aids        donors_aids?
+  weight      Float?
   bloodtypes  bloodtypes?    @relation(fields: [bloodtypeId], references: [bloodtypeId])
   requests    requests[]
 
@@ -36,6 +39,8 @@ model requests {
   donorId     Int?
   amount      Int?
   bloodtypeId Int?
+  createdAt   DateTime?   @default(now())
+  updatedAt   DateTime?   @default(now())
   bloodtypes  bloodtypes? @relation(fields: [bloodtypeId], references: [bloodtypeId])
   donors      donors?     @relation(fields: [donorId], references: [donorId])
 
@@ -54,4 +59,9 @@ model users {
 enum donors_gender {
   male
   female
+}
+
+enum donors_aids {
+  negative
+  positive
 }
