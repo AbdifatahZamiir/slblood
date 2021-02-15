@@ -12,7 +12,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Fab from "@material-ui/core/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddIcon from "@material-ui/icons/Add";
-import { blue, pink } from "@material-ui/core/colors";
+import { green, pink } from "@material-ui/core/colors";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -37,14 +37,14 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 200,
   },
   blueLight: {
-    color: blue[600],
+    color: green[600],
   },
   selectEmpty: {
     marginTop: theme.spacing(1),
   },
   fab: {
     margin: theme.spacing(2),
-    backgroundColor: blue[600],
+    backgroundColor: green[600],
     color: theme.palette.getContrastText(pink[500]),
   },
 }));

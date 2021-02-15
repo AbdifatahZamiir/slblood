@@ -11,13 +11,13 @@ import AssessmentIcon from "@material-ui/icons/Assessment";
 import SupervisedUserCircle from "@material-ui/icons/SupervisedUserCircle";
 import LineWeight from "@material-ui/icons/LineWeight";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import { blue } from "@material-ui/core/colors";
+import { green } from "@material-ui/core/colors";
 // import AssignmentIcon from "@material-ui/icons/Assignment";
 import SchoolIcon from "@material-ui/icons/School";
 
 const useStyles = makeStyles((theme) => ({
 	color: {
-		color: blue[600],
+		color: green[500],
 	},
 }));
 

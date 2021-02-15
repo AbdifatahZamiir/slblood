@@ -23,7 +23,7 @@ export default function LongMenu() {
 	const handleClose = (option: string) => {
 		if (option === "logout") {
 			auth.logout();
-			window.location.pathname = "/signin";
+			window.location.pathname = "/signup";
 			setAnchorEl(null);
 		} else {
 			setAnchorEl(null);

@@ -11,20 +11,20 @@ import {
 import _ from "lodash";
 
 interface Props {
-	bloodtypes: any;
+	donors: any;
 }
 
-const LevelGraph = ({ bloodtypes }: Props) => {
+const LevelGraph = ({ donors }: Props) => {
 	const ids: number[] = [];
-	bloodtypes.forEach((bloodtype: any) => {
-		const bloodtypeIds = [bloodtype.bloodname];
+	donors.forEach((donor: any) => {
+		const donorIds = [donor.bloodtypes.bloodname];
 
-		ids.push(...bloodtypeIds);
+		ids.push(...donorIds);
 	});
 
 	const data = _.values(_.groupBy(ids)).map((d) => ({
-		bloodtypeId: `Type ${d[0]}`,
-		bloodtypes: d.length,
+		donorId: `Type ${d[0]}`,
+		Donors: d.length,
 	}));
 	return (
 		<BarChart
@@ -40,7 +40,7 @@ const LevelGraph = ({ bloodtypes }: Props) => {
 			barSize={20}
 		>
 			<XAxis
-				dataKey="bloodtypeId"
+				dataKey="donorId"
 				scale="point"
 				padding={{ left: 10, right: 10 }}
 			/>
@@ -49,8 +49,8 @@ const LevelGraph = ({ bloodtypes }: Props) => {
 			<Legend />
 			<CartesianGrid strokeDasharray="3 3" />
 			<Bar
-				dataKey="bloodtypes"
-				fill="#1e88e5"
+				dataKey="Donors"
+				fill="#FF0000"
 				background={{ fill: "#ccc" }}
 			/>
 		</BarChart>

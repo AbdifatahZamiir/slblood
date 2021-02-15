@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { blue } from "@material-ui/core/colors";
+import { green } from "@material-ui/core/colors";
 import EditIcon from "@material-ui/icons/Edit";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -12,7 +12,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
   editButton: {
-    color: blue[600],
+    color: green[600],
     cursor: `pointer`,
   },
 }));

@@ -10,11 +10,11 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Box, Container, IconButton, Tooltip } from "@material-ui/core";
-import generateTeacherPDF from "../../services/singleTeacherReport";
+import generatePDF from "../../services/singleDonorReport";
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    width: "99.9999%",
+    minWidth: 650,
   },
   report: {
     margin: theme.spacing(1),
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TeacherView(props: any) {
+export default function DonorVIew(props: any) {
   const classes = useStyles();
   return (
     <>
@@ -44,9 +44,7 @@ export default function TeacherView(props: any) {
                 <Tooltip title="Create Report">
                   <IconButton
                     className={classes.report}
-                    onClick={() =>
-                      generateTeacherPDF(props.location.state.teacher)
-                    }
+                    onClick={() => generatePDF(props.location.state.row)}
                     aria-label="report"
                   >
                     <AssignmentIcon fontSize="large" />
@@ -55,21 +53,21 @@ export default function TeacherView(props: any) {
               </Box>
             </Box>
           </Container>
-          <RenderTeacher teacher={props.location.state.teacher} />
-          <RenderStudents teacher={props.location.state.teacher} />
+          <RenderDonor row={props.location.state.row} />
+          <RenderRequests row={props.location.state.row} />
         </>
       ) : (
-        <h4>Selecet student</h4>
+        <h4>Selecet donor</h4>
       )}
     </>
   );
 }
 
-const RenderStudents = ({ teacher }: any) => {
+const RenderRequests = ({ row }: any) => {
   const classes = useStyles();
   return (
     <>
-      <h2>Student Info...</h2>
+      <h2>Requests Info...</h2>
       <TableContainer component={Paper}>
         <Table
           className={classes.table}
@@ -78,31 +76,22 @@ const RenderStudents = ({ teacher }: any) => {
         >
           <TableHead className={classes.head}>
             <TableRow>
-              <TableCell>Student ID</TableCell>
-              <TableCell>Student Name</TableCell>
-              <TableCell>Country</TableCell>
-              <TableCell>Contact</TableCell>
-              <TableCell align="left">Gender</TableCell>
+              <TableCell>Request ID</TableCell>
+              <TableCell>Blood Type</TableCell>
+              <TableCell align="left">amount</TableCell>
             </TableRow>
           </TableHead>
-          {teacher.students && (
+          {row.requests && (
             <TableBody>
-              {teacher.students.map((historyRow: any) => (
-                <TableRow key={historyRow.studentId}>
+              {row.requests.map((historyRow: any) => (
+                <TableRow key={historyRow.requestId}>
                   <TableCell align="left" className={classes.uniqueName}>
-                    {historyRow.studentId}
+                    {historyRow.requestId}
                   </TableCell>
                   <TableCell className={classes.uniqueName}>
-                    {historyRow.firstname} {historyRow.secondname}{" "}
-                    {historyRow.lastname}
+                    {historyRow.bloodtypes.bloodname}
                   </TableCell>
-                  <TableCell className={classes.uniqueName}>
-                    {historyRow.country}
-                  </TableCell>
-                  <TableCell className={classes.uniqueName}>
-                    {historyRow.contact}
-                  </TableCell>
-                  <TableCell align="left">{historyRow.gender}</TableCell>
+                  <TableCell align="left">{historyRow.amount}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -113,11 +102,12 @@ const RenderStudents = ({ teacher }: any) => {
   );
 };
 
-const RenderTeacher = ({ teacher }: any) => {
+const RenderDonor = ({ row }: any) => {
+  console.log(row);
   const classes = useStyles();
   return (
     <>
-      <h2>Teacher Info...</h2>
+      <h2>Donor Info...</h2>
       <TableContainer component={Paper}>
         <Table
           size="medium"
@@ -126,29 +116,33 @@ const RenderTeacher = ({ teacher }: any) => {
         >
           <TableHead className={classes.head}>
             <TableRow>
-              <TableCell>Teacher Id</TableCell>
-              <TableCell align="left">Teacher Name</TableCell>
+              <TableCell>Donor Id</TableCell>
+              <TableCell align="left">Donor Name</TableCell>
+              <TableCell align="left">City</TableCell>
               <TableCell align="left">Contact</TableCell>
               <TableCell align="left">Gender</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow key={teacher.teacherId}>
+            <TableRow key={row.donorId}>
               <TableCell
                 component="th"
                 scope="row"
                 className={classes.uniqueName}
               >
-                {teacher.teacherId}
+                {row.donorId}
               </TableCell>
               <TableCell align="left" className={classes.uniqueName}>
-                {teacher.firstname} {teacher.secondname} {teacher.lastname}
+                {row.firstname} {row.secondname} {row.lastname}
               </TableCell>
               <TableCell align="left" className={classes.uniqueName}>
-                {teacher.contact}
+                {row.city}
               </TableCell>
               <TableCell align="left" className={classes.uniqueName}>
-                {teacher.gender}
+                {row.contact}
+              </TableCell>
+              <TableCell align="left" className={classes.uniqueName}>
+                {row.gender}
               </TableCell>
             </TableRow>
           </TableBody>

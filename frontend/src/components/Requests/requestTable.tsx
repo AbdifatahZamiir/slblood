@@ -1,5 +1,5 @@
 import Box from "@material-ui/core/Box";
-import { blue, pink } from "@material-ui/core/colors";
+import { green, pink } from "@material-ui/core/colors";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
@@ -27,7 +27,7 @@ import RequestPopForm from "../Forms/PopUpForms/requestPop";
 import FilterSize from "../Common/filter";
 import Search from "../Search/search";
 import DeletePopUp from "../Forms/PopUpForms/deletePop";
-
+import auth from "../../services/authServices";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "table-cell",
@@ -58,18 +58,18 @@ const useStyles = makeStyles((theme) => ({
   },
 
   editButton: {
-    color: blue[600],
+    color: green[600],
     cursor: `pointer`,
   },
   fab: {
     margin: theme.spacing(2),
     color: theme.palette.getContrastText(pink[500]),
-    backgroundColor: blue[600],
+    backgroundColor: green[600],
   },
 }));
 
 const isSearched = (value: string) => ({ bloodtypes }: any) =>
-  bloodtypes.examCode.toLowerCase().includes(value.toLowerCase());
+  bloodtypes.bloodname.toLowerCase().includes(value.toLowerCase());
 
 export default function RequestTable() {
   const classes = useStyles();
@@ -87,7 +87,7 @@ export default function RequestTable() {
   const [size, setSize] = useState(5);
   const [donorItems, setDonorItems] = useState(0);
   const [bloodtypeItems, setBloodTypeItems] = useState(0);
-
+  const { admin }: any = auth.getCurrentUser();
   useEffect(() => {
     const fetchrequests = async (page: number, size: number) => {
       const { data } = await getRequests(page, size);
@@ -109,7 +109,6 @@ export default function RequestTable() {
 
     fetchDonors(page - 1, donorItems);
   }, [page, donorItems]);
-
 
   useEffect(() => {
     const fetchBloodTypes = async (page: number, size: number) => {
@@ -232,34 +231,40 @@ export default function RequestTable() {
                   </TableHead>
                   {requests && (
                     <TableBody>
-                      {requests.filter(isSearched(value)).map((request: any) => (
-                        <TableRow key={request.requestId}>
-                          <TableCell component="th" scope="row">
-                            {request.requestId}
-                          </TableCell>
-                          <TableCell>
-                            {request.donors.firstname}{" "}
-                            {request.donors.secondname}{" "}
-                            {request.donors.lastname}
-                          </TableCell>
-                          <TableCell>{request.bloodtypes.bloodname}</TableCell>
-                          <TableCell>{request.amount}</TableCell>
+                      {requests
+                        .filter(isSearched(value))
+                        .map((request: any) => (
+                          <TableRow key={request.requestId}>
+                            <TableCell component="th" scope="row">
+                              {request.requestId}
+                            </TableCell>
+                            <TableCell>
+                              {request.donors.firstname}{" "}
+                              {request.donors.secondname}{" "}
+                              {request.donors.lastname}
+                            </TableCell>
+                            <TableCell>
+                              {request.bloodtypes.bloodname}
+                            </TableCell>
+                            <TableCell>{request.amount}</TableCell>
 
-                          <TableCell style={{ display: "flex" }}>
-                            <RequestPopForm
-                              onSubmit={handleUpdate}
-                              request={request}
-                              donors={donors}
-                              bloodtypes={bloodtypes}
-                            />
+                            {admin && (
+                              <TableCell style={{ display: "flex" }}>
+                                <RequestPopForm
+                                  onSubmit={handleUpdate}
+                                  request={request}
+                                  donors={donors}
+                                  bloodtypes={bloodtypes}
+                                />
 
-                            <DeletePopUp
-                              item={request.requestId}
-                              onDelete={handleDelete}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                                <DeletePopUp
+                                  item={request.requestId}
+                                  onDelete={handleDelete}
+                                />
+                              </TableCell>
+                            )}
+                          </TableRow>
+                        ))}
                     </TableBody>
                   )}
                 </Table>

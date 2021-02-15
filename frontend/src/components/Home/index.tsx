@@ -27,7 +27,7 @@ const Home = () => {
   const [donorItems, setDonorItems] = useState(0);
   const [requestItems, setRequests] = useState(0);
   const [bloodtypeItems, setBloodTypesItems] = useState(0);
-  const [bloodtypes, setBloodTypes] = useState<Array<{}>>([]);
+  const [donors, setDonors] = useState<Array<{}>>([]);
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     const fetchRequests = async () => {
@@ -39,13 +39,13 @@ const Home = () => {
     const fetchDonors = async (page: number, size: number) => {
       const { data } = await getDonors(page, size);
       const { totalItems, donors } = data;
+      setDonors(donors);
       setDonorItems(totalItems);
       setLoading(false);
     };
     const fetchBloodTypes = async () => {
       const { data } = await getBloodTypes();
       const { totalItems, bloodtypes } = data;
-      setBloodTypes(bloodtypes);
       setBloodTypesItems(totalItems);
       setLoading(false);
     };
@@ -75,7 +75,7 @@ const Home = () => {
                 >
                   Blood Level
                 </Typography>
-                <LevelGraph bloodtypes={bloodtypes} />
+                <LevelGraph donors={donors} />
               </Paper>
             </Grid>
             <Grid item xs={3}></Grid>

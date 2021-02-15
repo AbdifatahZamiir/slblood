@@ -1,5 +1,5 @@
 import Box from "@material-ui/core/Box";
-import { blue, pink } from "@material-ui/core/colors";
+import { green, pink } from "@material-ui/core/colors";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,7 +24,7 @@ import BloodTypePopForm from "../Forms/PopUpForms/BloodTypePopForm";
 import DeletePopUp from "../Forms/PopUpForms/deletePop";
 import SnackPar from "../Common/snackpar";
 import Search from "../Search/search";
-
+import auth from "../../services/authServices";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "",
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   fab: {
     margin: theme.spacing(2),
     color: theme.palette.getContrastText(pink[500]),
-    backgroundColor: blue[600],
+    backgroundColor: green[600],
   },
 }));
 
@@ -76,6 +76,7 @@ export function BloodTypeTable() {
   const [page, setPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [size, setSize] = useState(5);
+  const { admin }: any = auth.getCurrentUser();
 
   useEffect(() => {
     const fetchBloodTypes = async (page: number, size: number) => {
@@ -198,30 +199,36 @@ export function BloodTypeTable() {
                     <TableRow>
                       <TableCell>#ID</TableCell>
                       <TableCell>Blood Name</TableCell>
-                      <TableCell align="center">Actions</TableCell>
+                      {admin && (
+                        <TableCell align="center">Actions</TableCell>
+                      )}{" "}
                     </TableRow>
                   </TableHead>
                   {bloodtypes && (
                     <TableBody>
-                      {bloodtypes.filter(isSearched(value)).map((bloodtype: any) => (
-                        <TableRow key={bloodtype.bloodtypeId}>
-                          <TableCell component="th" scope="row">
-                            {bloodtype.bloodtypeId}
-                          </TableCell>
-                          <TableCell>{bloodtype.bloodname}</TableCell>
-                          <TableCell style={{ display: "flex" }}>
-                            <BloodTypePopForm
-                              onSubmit={handleUpdate}
-                              bloodtype={bloodtype}
-                            />
+                      {bloodtypes
+                        .filter(isSearched(value))
+                        .map((bloodtype: any) => (
+                          <TableRow key={bloodtype.bloodtypeId}>
+                            <TableCell component="th" scope="row">
+                              {bloodtype.bloodtypeId}
+                            </TableCell>
+                            <TableCell>{bloodtype.bloodname}</TableCell>
+                            {admin && (
+                              <TableCell style={{ display: "flex" }}>
+                                <BloodTypePopForm
+                                  onSubmit={handleUpdate}
+                                  bloodtype={bloodtype}
+                                />
 
-                            <DeletePopUp
-                              item={bloodtype.bloodtypeId}
-                              onDelete={handleDelete}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                                <DeletePopUp
+                                  item={bloodtype.bloodtypeId}
+                                  onDelete={handleDelete}
+                                />
+                              </TableCell>
+                            )}
+                          </TableRow>
+                        ))}
                     </TableBody>
                   )}
                 </Table>
@@ -238,10 +245,17 @@ export function BloodTypeTable() {
             ) : null}
           </Grid>
           <Grid item xs={7}>
-            <Paper elevation={0} variant="outlined" className={classes.paper}>
-              <h3>bloodtype Form</h3>
-              <BloodTypeForm bloodtype="bloodtype" name="add" onSubmit={handleSubmit} />
-            </Paper>
+            {admin && (
+              <Paper elevation={0} variant="outlined" className={classes.paper}>
+                <h3>bloodtype Form</h3>
+
+                <BloodTypeForm
+                  bloodtype="bloodtype"
+                  name="add"
+                  onSubmit={handleSubmit}
+                />
+              </Paper>
+            )}
           </Grid>
         </Grid>
       </div>

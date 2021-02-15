@@ -1,7 +1,7 @@
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import Collapse from "@material-ui/core/Collapse";
-import { blue, pink } from "@material-ui/core/colors";
+import { green, pink } from "@material-ui/core/colors";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,6 +19,8 @@ import React from "react";
 import StudentForm from "../Forms/donorForm";
 import DeletePopUp from "../Forms/PopUpForms/deletePop";
 import { Link } from "react-router-dom";
+import auth from "../../services/authServices";
+import Chip from "@material-ui/core/Chip";
 
 const useRowStyles = makeStyles((theme) => ({
   root: {
@@ -28,11 +30,15 @@ const useRowStyles = makeStyles((theme) => ({
   },
   avatar: {
     color: theme.palette.getContrastText(pink[500]),
-    backgroundColor: blue[600],
+    backgroundColor: green[500],
   },
-  blueLight: {
-    color: blue[600],
+  greenLight: {
+    color: green[600],
     height: "24px",
+  },
+  red: {
+    backgroundColor: pink[500],
+    color: theme.palette.getContrastText(pink[500]),
   },
   button: {
     cursor: `pointer`,
@@ -51,6 +57,7 @@ const Row: React.FC<Props> = (props) => {
   const { row, onDelete, bloodtypes, onUpdate } = props;
   const [open, setOpen] = React.useState<boolean>(false);
   const classes: any = useRowStyles();
+  const { admin }: any = auth.getCurrentUser();
 
   return (
     <React.Fragment>
@@ -59,7 +66,7 @@ const Row: React.FC<Props> = (props) => {
           <IconButton
             aria-label="expand row"
             size="small"
-            className={classes.blueLight}
+            className={classes.greenLight}
             onClick={() => setOpen(!open)}
           >
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -70,37 +77,41 @@ const Row: React.FC<Props> = (props) => {
             {row.firstname.charAt(0).toUpperCase()}
           </Avatar>
         </TableCell>
-        <TableCell align="left">{row.donorId}</TableCell>
         <TableCell align="left">{row.firstname}</TableCell>
         <TableCell align="left">{row.secondname}</TableCell>
         <TableCell align="left">{row.lastname}</TableCell>
         <TableCell align="left">{row.city}</TableCell>
         <TableCell align="left">{row.gender}</TableCell>
-        <TableCell style={{ display: "flex" }}>
-          <StudentForm
-            onSubmit={onUpdate}
-            bloodtypes={bloodtypes}
-            name="edit"
-            row={row}
-          />
-
-          <DeletePopUp item={row.studentId} onDelete={onDelete} />
-          <Tooltip title="View Report">
-            <IconButton aria-label="report">
-              <Link
-                className={classes.blueLight}
-                to={{
-                  pathname: "/dashboard/studentview",
-                  state: {
-                    row,
-                  },
-                }}
-              >
-                <VisibilityIcon />
-              </Link>
-            </IconButton>
-          </Tooltip>
+        <TableCell align="left">
+          {" "}
+          <Chip label={row.bloodtypes.bloodname} className={classes.red} />
         </TableCell>
+        {admin && (
+          <TableCell style={{ display: "flex" }}>
+            <StudentForm
+              onSubmit={onUpdate}
+              bloodtypes={bloodtypes}
+              name="edit"
+              row={row}
+            />
+            <DeletePopUp item={row.donorId} onDelete={onDelete} />
+            <Tooltip title="View Report">
+              <IconButton aria-label="report">
+                <Link
+                  className={classes.greenLight}
+                  to={{
+                    pathname: "/dashboard/donorview",
+                    state: {
+                      row,
+                    },
+                  }}
+                >
+                  <VisibilityIcon />
+                </Link>
+              </IconButton>
+            </Tooltip>
+          </TableCell>
+        )}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

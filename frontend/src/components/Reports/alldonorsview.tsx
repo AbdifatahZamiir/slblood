@@ -10,7 +10,7 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Box, Container, IconButton, Tooltip } from "@material-ui/core";
-import generatePDF from "../../services/teacherReport";
+import generatePDF from "../../services/donorReports";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AllTeacherView(props: any) {
+export default function AlldonorView(props: any) {
   const classes = useStyles();
   return (
     <>
@@ -44,7 +44,7 @@ export default function AllTeacherView(props: any) {
                 <Tooltip title="Create Report">
                   <IconButton
                     className={classes.report}
-                    onClick={() => generatePDF(props.location.state.teachers)}
+                    onClick={() => generatePDF(props.location.state.donors)}
                     aria-label="report"
                   >
                     <AssignmentIcon fontSize="large" />
@@ -53,7 +53,7 @@ export default function AllTeacherView(props: any) {
               </Box>
             </Box>
           </Container>
-          <RenderTeachers teachers={props.location.state.teachers} />
+          <RenderDOnors donors={props.location.state.donors} />
         </>
       ) : (
         <h4>Select Report</h4>
@@ -62,11 +62,11 @@ export default function AllTeacherView(props: any) {
   );
 }
 
-const RenderTeachers = ({ teachers }: any) => {
+const RenderDOnors = ({ donors }: any) => {
   const classes = useStyles();
   return (
     <>
-      <h2>Teachers Report</h2>
+      <h2>Donors Report</h2>
       <TableContainer component={Paper}>
         <Table
           className={classes.table}
@@ -75,26 +75,30 @@ const RenderTeachers = ({ teachers }: any) => {
         >
           <TableHead className={classes.head}>
             <TableRow>
-              <TableCell>Teacher ID</TableCell>
-              <TableCell align="left">Teacher Name</TableCell>
+              <TableCell>Donor ID</TableCell>
+              <TableCell align="left">Donor Name</TableCell>
               <TableCell align="left">Contact</TableCell>
+              <TableCell align="left">City</TableCell>
               <TableCell align="left">Gender</TableCell>
             </TableRow>
           </TableHead>
-          {teachers && (
+          {donors && (
             <TableBody>
-              {teachers.map((teacher: any) => (
-                <TableRow key={teacher.teacherId}>
+              {donors.map((donor: any) => (
+                <TableRow key={donor.donorId}>
                   <TableCell align="left" className={classes.uniqueName}>
-                    {teacher.teacherId}
+                    {donor.donorId}
                   </TableCell>
                   <TableCell className={classes.uniqueName}>
-                    {teacher.firstname} {teacher.secondname} {teacher.lastname}
+                    {donor.firstname} {donor.secondname} {donor.lastname}
                   </TableCell>
                   <TableCell className={classes.uniqueName}>
-                    {teacher.contact}
+                    {donor.contact}
                   </TableCell>
-                  <TableCell align="left">{teacher.gender}</TableCell>
+                  <TableCell className={classes.uniqueName}>
+                    {donor.city}
+                  </TableCell>
+                  <TableCell align="left">{donor.gender}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

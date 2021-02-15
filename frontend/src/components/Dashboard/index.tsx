@@ -10,13 +10,11 @@ import { Drawer } from "../SideBar";
 import Profile from "../Common/Profile";
 import Grades from "../Requests";
 import NotFound from "../Common/NotFound";
-import StudentView from "../Reports/studentReportView";
-import TeacherView from "../Reports/teacherReport";
-import AllStudentView from "../Reports/allStudentReport";
-import AllTeacherView from "../Reports/allTeacherReport";
 import Donors from "../Donors";
 import Requests from "../Requests";
 import BloodTypes from "../BloodTypes";
+import AlldonorView from "../Reports/alldonorsview";
+import DonorVIew from "../Reports/donorReportView";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -71,20 +69,12 @@ const Dashboard = () => {
             <ProtectedRoute path="/dashboard/profile" component={Profile} />
             <Route path="/dashboard/not-found" component={NotFound} />
             <ProtectedRoute
-              path="/dashboard/studentview"
-              component={StudentView}
+              path="/dashboard/donorview"
+              component={DonorVIew}
             />
             <ProtectedRoute
-              path="/dashboard/teacherview"
-              component={TeacherView}
-            />
-            <ProtectedRoute
-              path="/dashboard/allteacherview"
-              component={AllTeacherView}
-            />
-            <ProtectedRoute
-              path="/dashboard/allstudentsview"
-              component={AllStudentView}
+              path="/dashboard/alldonorsview"
+              component={AlldonorView}
             />
             <ProtectedRoute path="/dashboard/grades" component={Grades} />
             <ProtectedRoute path="/dashboard" component={Home} />

@@ -4,17 +4,17 @@ import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
-import { blue, pink, orange, red } from "@material-ui/core/colors";
+import { blue, pink, orange } from "@material-ui/core/colors";
 import Person from "@material-ui/icons/Person";
 import Paper from "@material-ui/core/Paper";
 import SupervisedUserCircle from "@material-ui/icons/SupervisedUserCircle";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 
-import AA from "../../images/aa.png";
-import BB from "../../images/bb.png";
-import B from "../../images/b.png";
-import ABB from "../../images/abb.png";
-import O from "../../images/o.png";
+// import AA from "../../images/aa.png";
+// import BB from "../../images/bb.png";
+// import B from "../../images/b.png";
+// import ABB from "../../images/abb.png";
+// import O from "../../images/o.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,11 +31,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0.5),
   },
   red: {
-    backgroundColor: red[500],
+    backgroundColor: pink[500],
     color: theme.palette.getContrastText(pink[500]),
-    borderWidth: "1px",
-    borderStyle: "solid",
-    borderColor: "black",
   },
   section1: {
     margin: theme.spacing(3, 2),
@@ -52,6 +49,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: pink[500],
     width: theme.spacing(7),
     height: theme.spacing(7),
+  },
+  orange: {
+    backgroundColor: orange[500],
+    color: theme.palette.getContrastText(pink[500])
   },
   primary: {
     backgroundColor: blue[600],
@@ -84,9 +85,9 @@ export default function Cards(props: Props) {
     <Grid container spacing={3}>
       {props && (
         <>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Paper className={classes.paper}>
-              <Chip label="A+ blood type" className={classes.red} />
+              <Chip label="No Donors" className={classes.orange} />
               <div className={classes.root}>
                 <div className={classes.section1}>
                   <Grid container alignItems="center">
@@ -96,7 +97,11 @@ export default function Cards(props: Props) {
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <img src={AA} width="100" height="90" />
+                      <Typography gutterBottom variant="h5">
+                        <Avatar aria-label="recipe" className={classes.avatar1}>
+                          <Person />
+                        </Avatar>
+                      </Typography>
                     </Grid>
                   </Grid>
                   <Typography
@@ -107,9 +112,9 @@ export default function Cards(props: Props) {
               </div>
             </Paper>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Paper className={classes.paper}>
-              <Chip label="A- blood type" className={classes.red} />
+              <Chip label="Blood Types" className={classes.red} />
               <div className={classes.root}>
                 <div className={classes.section1}>
                   <Grid container alignItems="center">
@@ -119,7 +124,11 @@ export default function Cards(props: Props) {
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <img src={AA} width="100" height="90" />
+                      <Typography gutterBottom variant="h5">
+                        <Avatar aria-label="recipe" className={classes.avatar2}>
+                          <SupervisedUserCircle />
+                        </Avatar>
+                      </Typography>
                     </Grid>
                   </Grid>
                   <Typography
@@ -130,9 +139,9 @@ export default function Cards(props: Props) {
               </div>
             </Paper>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Paper className={classes.paper}>
-              <Chip label="AB+ blood type" className={classes.red} />
+              <Chip label="Requests" className={classes.primary} />
               <div className={classes.root}>
                 <div className={classes.section1}>
                   <Grid container alignItems="center">
@@ -142,7 +151,11 @@ export default function Cards(props: Props) {
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <img src={ABB} width="100" height="90" />
+                      <Typography gutterBottom variant="h5">
+                        <Avatar aria-label="recipe" className={classes.avatar3}>
+                          <LibraryBooks />
+                        </Avatar>
+                      </Typography>{" "}
                     </Grid>
                   </Grid>
                   <Typography
@@ -153,7 +166,7 @@ export default function Cards(props: Props) {
               </div>
             </Paper>
           </Grid>
-          <Grid item xs={3}>
+          {/* <Grid item xs={3}>
             <Paper className={classes.paper}>
               <Chip label="AB- blood type" className={classes.red} />
               <div className={classes.root}>
@@ -268,7 +281,7 @@ export default function Cards(props: Props) {
                 </div>
               </div>
             </Paper>
-          </Grid>
+          </Grid> */}
         </>
       )}
     </Grid>

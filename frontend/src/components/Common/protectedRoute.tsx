@@ -19,7 +19,7 @@ const ProtectedRoute = ({
       exact
       {...rest}
       render={(props: any) => {
-        if (!auth.getCurrentUser()) return <Redirect to="/signin" />;
+        if (!auth.getCurrentUser()) return <Redirect to="/signup" />;
         return Component ? <Component {...props} /> : render(props);
       }}
     />
